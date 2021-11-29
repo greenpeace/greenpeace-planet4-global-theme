@@ -6,6 +6,7 @@
 namespace P4\MasterTheme;
 
 use P4\MasterTheme\Commands\CloudflarePurge;
+use P4\MasterTheme\Commands\DetectMissingImageSizes;
 use P4\MasterTheme\Commands\RunActivator;
 use P4\MasterTheme\Commands\SaveCloudflareKey;
 
@@ -23,5 +24,6 @@ class Commands {
 		RunActivator::register();
 		SaveCloudflareKey::register();
 		CloudflarePurge::register();
+		DetectMissingImageSizes::register();
 	}
 }
