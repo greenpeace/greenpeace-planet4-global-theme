@@ -3,22 +3,21 @@
 /**
  * The template for displaying Author Archive pages
  *
- * Methods for TimberHelper can be found in the /lib sub-directory
+ * Methods for \Timber\Helper can be found in the /lib sub-directory
  *
  * @package  WordPress
  * @subpackage  Timber
  * @since    Timber 0.1
  */
 
-use P4\MasterTheme\User;
 use P4\MasterTheme\Post;
 use P4\MasterTheme\ListingPage;
 use Timber\Timber;
 
-$context = Timber::get_context();
+$context = Timber::context();
 
 if (isset($wp_query->query_vars['author'])) {
-    $author = new User($wp_query->query_vars['author']);
+    $author = Timber::get_user($wp_query->query_vars['author']);
     $context['author'] = $author;
     $context['title'] = 'Author Archives: ' . $author->name();
 

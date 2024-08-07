@@ -113,7 +113,7 @@ class Context
             $post_content .= $post->take_action_boxout;
         }
 
-        preg_match_all('/wp:planet4-blocks\/(\S+)|wp:gravityforms\/(\S+)*/', $post_content, $matches);
+        preg_match_all('/wp:planet4-blocks\/(\S+)|wp:gravityforms\/(\S+)*/', $post_content ?? '', $matches);
 
         $p4_blocks = array_map(
             function ($block) {

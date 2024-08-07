@@ -12,7 +12,7 @@
         <div class="author-details">
             <h1 class="page-header-title">{{ author.name }}</h1>
             {% if ( author.description ) %}
-                <p class="d-md-block author-bio" aria-label="{{ __( 'Author bio', 'planet4-master-theme' ) }}">{{ fn('wpautop', fn('the_author_meta', 'description', author.id))|e('wp_kses_post')|raw }}</p>
+                <p class="d-md-block author-bio" aria-label="{{ __( 'Author bio', 'planet4-master-theme' ) }}">{{ fn('wpautop', author.description)|e('wp_kses_post')|raw }}</p>
             {% endif %}
         </div>
     </header>

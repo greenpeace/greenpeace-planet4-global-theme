@@ -11,7 +11,6 @@
  */
 
 use P4\MasterTheme\Context;
-use P4\MasterTheme\Post;
 use P4\MasterTheme\ListingPage;
 use Timber\Timber;
 
@@ -35,10 +34,10 @@ if ($redirect_id) {
     exit();
 }
 
-$post = Timber::query_post(false, Post::class); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-$context = Timber::get_context();
+$post = Timber::get_post(false); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+$context = Timber::context();
 if ($post instanceof \WP_Post) {
-    $post = new Post($post->ID);
+    $post = Timber::get_post($post->ID);
     Context::set_og_meta_fields($context, $post);
 }
 

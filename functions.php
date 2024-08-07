@@ -4,7 +4,6 @@ use P4\MasterTheme\Api;
 use P4\MasterTheme\Loader;
 use P4\MasterTheme\MediaArchive\Rest;
 use P4\MasterTheme\Post;
-use Timber\Timber;
 
 // This theme vendor dir
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {
@@ -80,7 +79,7 @@ function planet4_get_option(string $key = '', $default = null)
 }
 
 // Timber loading
-if (!class_exists(Timber::class)) {
+if (!class_exists('\\Timber\\Timber')) {
     add_action('admin_notices', function (): void {
         echo '<div class="error"><p>Timber not activated. '
             . 'Make sure you installed the composer package `timber/timber`.</p></div>';
@@ -91,8 +90,7 @@ if (!class_exists(Timber::class)) {
     );
     return;
 }
-Timber::$cache = defined('WP_DEBUG') ? !WP_DEBUG : true;
-$timber = new Timber();
+\Timber\Timber::init();
 
 add_action(
     'rest_api_init',

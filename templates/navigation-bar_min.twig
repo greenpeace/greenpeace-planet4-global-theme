@@ -11,7 +11,7 @@
                     <li class="nav-item {{ item.class }}">
                 {% endif %}
                     <a class="nav-link"
-                        href="{{ item.get_link }}"
+                        href="{{ item.link }}"
                         target="{{ item.target }}"
                     >{{ item.title|striptags|trim|slice(0, 2) }}</a>
                 {% if key == (languages - 1) %}

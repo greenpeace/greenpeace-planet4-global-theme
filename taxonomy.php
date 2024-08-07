@@ -12,7 +12,7 @@ use Timber\Timber;
 
 $templates = [ 'taxonomy.twig', 'index.twig' ];
 
-$context = Timber::get_context();
+$context = Timber::context();
 $taxonomy = get_queried_object();
 
 $context['taxonomy'] = $taxonomy;

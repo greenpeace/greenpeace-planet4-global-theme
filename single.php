@@ -3,7 +3,7 @@
 /**
  * The Template for displaying all single posts
  *
- * Methods for TimberHelper can be found in the /lib sub-directory
+ * Methods for \Timber\Helper can be found in the /lib sub-directory
  *
  * @package  WordPress
  * @subpackage  Timber
@@ -11,18 +11,17 @@
  */
 
 use P4\MasterTheme\Context;
-use P4\MasterTheme\Post;
 use P4\MasterTheme\Settings\CommentsGdpr;
 use Timber\Timber;
 
 // Initializing variables.
-$context = Timber::get_context();
+$context = Timber::context();
 /**
  * P4 Post Object
  *
  * @var Post $post
  */
-$post = Timber::query_post(false, Post::class); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+$post = Timber::get_post(false); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 $context['post'] = $post;
 
 // Set Navigation Issues links.

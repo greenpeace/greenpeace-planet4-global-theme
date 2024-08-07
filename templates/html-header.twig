@@ -36,7 +36,7 @@
         <link rel="canonical" href="{{ canonical_link }}">
     {% endif %}
 
-    {{ wp_head }}
+    {{ function('wp_head') }}
 
     {% if preconnect_domains %}
         {% for domain in preconnect_domains %}

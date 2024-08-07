@@ -41,8 +41,6 @@ class View
         array $data,
         string $relevant_dir = 'block_templates/'
     ): bool|string {
-        Timber::$locations = $this->get_template_dir($template_name, $relevant_dir);
-
         return Timber::compile([$relevant_dir . $template_name . '.twig'], $data);
     }
 
@@ -61,8 +59,6 @@ class View
         string $relevant_dir = '',
         bool $compile = false
     ): string|null {
-        Timber::$locations = $this->get_template_dir($template_name, $relevant_dir);
-
         if ($compile) {
             return Timber::compile([$relevant_dir . $template_name . '.twig'], $data);
         }
@@ -123,7 +119,6 @@ class View
     ): void {
         $template_dir = $this->get_template_dir($template_name, $relevant_dir, $template_ext);
         if ('twig' === $template_ext) {
-            Timber::$locations = $template_dir;
             Timber::render([$relevant_dir . $template_name . '.' . $template_ext], $data);
         } else {
             include_once $template_dir . $relevant_dir . $template_name . '.' . $template_ext;

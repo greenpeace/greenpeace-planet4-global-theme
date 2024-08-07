@@ -11,7 +11,7 @@
         <div class="burger-menu-item-wrapper accordion-header" id="burger-menu-accordion-{{ targetId }}">
             <a
                 class="nav-link"
-                href="{{ item.get_link }}"
+                href="{{ item.link }}"
                 target="{{ item.target }}"
                 data-ga-category="Menu Navigation"
                 data-ga-action="{{ link_ga_action }}"
@@ -49,8 +49,12 @@
                     {% endif %}
                     <a
                         class="nav-link"
+<<<<<<< HEAD
                         href="{{ item.get_link }}"
                         target="{{ item.target }}"
+=======
+                        href="{{ item.link }}"
+>>>>>>> ef0eeee4 (PLANET-7390: Update to Timber 2.1)
                         data-ga-category="Submenu Navigation"
                         data-ga-action="{{ link_ga_action }}"
                         data-ga-label="{{ page_category }}">

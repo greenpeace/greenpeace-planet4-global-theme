@@ -32,7 +32,7 @@ class SearchPage
     {
         $this->query = $query;
         $this->posts = $query->posts;
-        $this->context = Timber::get_context();
+        $this->context = Timber::context();
 
         $this->populate_context($query);
     }

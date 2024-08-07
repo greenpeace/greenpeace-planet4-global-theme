@@ -42,7 +42,7 @@ class OpenGraphTest extends P4TestCase
         \Timber\Timber::$context_cache = [];
 
         wp_styles();
-        $output = TimberHelper::ob_function(
+        $output = \Timber\Helper::ob_function(
             function () use ($template): void {
                     include get_template_directory() . '/' . $template;
             }
@@ -112,7 +112,7 @@ class OpenGraphTest extends P4TestCase
         \Timber\Timber::$context_cache = [];
 
         wp_styles();
-        $output = TimberHelper::ob_function(
+        $output = \Timber\Helper::ob_function(
             function () use ($template): void {
                     include get_template_directory() . '/' . $template;
             }

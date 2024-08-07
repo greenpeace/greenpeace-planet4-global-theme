@@ -3,7 +3,7 @@
 /**
  * The Template for displaying all action pages
  *
- * Methods for TimberHelper can be found in the /lib sub-directory
+ * Methods for \Timber\Helper can be found in the /lib sub-directory
  *
  * (Note: This file is a copy of page.php to use the same template for action pages.)
  *
@@ -13,11 +13,10 @@
  */
 
 use P4\MasterTheme\Context;
-use P4\MasterTheme\Post;
 use Timber\Timber;
 
-$context = Timber::get_context();
-$post = new Post(); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+$context = Timber::context();
+$post = Timber::get_post(); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 $page_meta_data = get_post_meta($post->ID);
 $page_meta_data = array_map(fn ($v) => reset($v), $page_meta_data);
 

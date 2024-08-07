@@ -4,7 +4,6 @@ namespace P4\MasterTheme;
 
 use P4\MasterTheme\Controllers\EnsapiController;
 use P4\MasterTheme\Blocks\ENForm;
-use Twig_SimpleFilter;
 
 /**
  * Class MasterBlocks
@@ -47,7 +46,7 @@ class MasterBlocks
         add_filter('timber/twig', function ($twig) {
             // Adding functions as filters.
             $twig->addFilter(
-                new Twig_SimpleFilter(
+                new \Twig\TwigFilter(
                     'object_to_array_theme',
                     function ($std_class_object) {
                         $response = [];

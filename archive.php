@@ -8,7 +8,7 @@
  *
  * Learn more: http://codex.wordpress.org/Template_Hierarchy
  *
- * Methods for TimberHelper can be found in the /lib sub-directory
+ * Methods for \Timber\Helper can be found in the /lib sub-directory
  *
  * @package  WordPress
  * @subpackage  Timber
@@ -19,7 +19,7 @@ use Timber\Timber;
 
 $templates = [ 'archive.twig', 'index.twig' ];
 
-$context = Timber::get_context();
+$context = Timber::context();
 
 $context['title'] = 'Archive';
 if (is_day()) {

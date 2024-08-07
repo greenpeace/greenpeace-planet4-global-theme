@@ -15,7 +15,7 @@
  * /mytheme/page-mypage.php
  * (in which case you'll want to duplicate this file and save to the above path)
  *
- * Methods for TimberHelper can be found in the /lib sub-directory
+ * Methods for \Timber\Helper can be found in the /lib sub-directory
  *
  * @package  WordPress
  * @subpackage  Timber
@@ -30,11 +30,10 @@
 
 use P4\MasterTheme\Context;
 use P4\MasterTheme\Features\RedirectRedirectPages;
-use P4\MasterTheme\Post;
 use Timber\Timber;
 
-$context = Timber::get_context();
-$post = new Post(); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+$context = Timber::context();
+$post = Timber::get_post(); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 $page_meta_data = get_post_meta($post->ID) ?: [];
 $page_meta_data = array_map(fn($v) => reset($v), $page_meta_data);
 

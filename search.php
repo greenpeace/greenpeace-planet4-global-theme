@@ -2,6 +2,12 @@
 
 /**
  * Search results page
+ *
+ * Methods for \Timber\Helper can be found in the /lib sub-directory
+ *
+ * @package  WordPress
+ * @subpackage  Timber
+ * @since   Timber 0.1
  */
 
 use P4\MasterTheme\Search\SearchPage;

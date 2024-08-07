@@ -3,14 +3,14 @@
 /**
  * The template for displaying 404 pages (Not Found)
  *
- * Methods for TimberHelper can be found in the /functions sub-directory
+ * Methods for \Timber\Helper can be found in the /functions sub-directory
  *
  * @package  WordPress
  * @subpackage  Timber
  * @since    Timber 0.1
  */
 
-$context = Timber::get_context();
+$context = Timber::context();
 
 $options = get_option('planet4_options');
 $context['page_notfound_image'] = $options['404_page_bg_image']
