@@ -32,6 +32,7 @@ use P4\MasterTheme\Migrations\M027RemoveListingPageGridViewOption;
 use P4\MasterTheme\Migrations\M028MovePageHeaderSideBarOptions;
 use P4\MasterTheme\Migrations\M029RemoveTemplateEditorOption;
 use P4\MasterTheme\Migrations\M030RemovePurgeOnFeatureChangeOption;
+use P4\MasterTheme\Migrations\M031MigrateSplit2ColumnBlock;
 
 /**
  * Run any new migration scripts and record results in the log.
@@ -81,6 +82,7 @@ class Migrator
             M028MovePageHeaderSideBarOptions::class,
             M029RemoveTemplateEditorOption::class,
             M030RemovePurgeOnFeatureChangeOption::class,
+            M031MigrateSplit2ColumnBlock::class,
         ];
 
         // Loop migrations and run those that haven't run yet.
