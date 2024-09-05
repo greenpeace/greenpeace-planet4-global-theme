@@ -19,7 +19,7 @@ class M032MigrateCampaignCoversToP4ColumnsBlock extends MigrationScript
     private const COVER_TYPE = 'campaign';
     private const OLD_COVER_TYPES = [
         '1' => 'take-action',
-        '2' => 'campaign',
+        '2' => self::COVER_TYPE,
         '3' => 'content',
     ];
 
@@ -31,8 +31,6 @@ class M032MigrateCampaignCoversToP4ColumnsBlock extends MigrationScript
      */
     public static function execute(MigrationRecord $record): void
     {
-        $parser = new WP_Block_Parser();
-
         // Get the list of posts using Covers block.
         $posts = self::get_posts_using_block(self::BLOCK_NAME);
 
@@ -40,6 +38,8 @@ class M032MigrateCampaignCoversToP4ColumnsBlock extends MigrationScript
         if (!$posts) {
             return;
         }
+
+        $parser = new WP_Block_Parser();
 
         foreach ($posts as $post) {
             if (empty($post->post_content)) {
@@ -53,6 +53,11 @@ class M032MigrateCampaignCoversToP4ColumnsBlock extends MigrationScript
             $blocks = $parser->parse($post->post_content);
 
             foreach ($blocks as &$block) {
+                // Skip non cover block.
+                if (!isset($block['blockName']) || $block['blockName'] !== self::BLOCK_NAME) {
+                    continue;
+                }
+
                 // For older cover blocks, the cover type is empty, so use the default content cover type,hence skip it.
                 if (!isset($block['attrs']['cover_type'])) {
                     continue;
@@ -63,24 +68,19 @@ class M032MigrateCampaignCoversToP4ColumnsBlock extends MigrationScript
                     $block['attrs']['cover_type'] = self::OLD_COVER_TYPES[ $block['attrs']['cover_type'] ];
                 }
 
-                // Skip other blocks & non campaign cover blocks.
-                if (
-                    ! isset($block['blockName']) || $block['blockName'] !== self::BLOCK_NAME ||
-                    $block['attrs']['cover_type'] !== self::COVER_TYPE
-                ) {
+                // Skip non campaign cover style blocks.
+                if ($block['attrs']['cover_type'] !== self::COVER_TYPE) {
                     continue;
                 }
 
                 // Gathering the data we want from this block.
-                $block_attrs = self::get_columns_block_attrs($block);
+                $block_attrs = self::get_columns_block_attrs($block['attrs']);
 
                 // No data, skip this block.
                 if (empty($block_attrs)) {
                     continue;
                 }
 
-                $block_attrs = array_merge(['columns_block_style' => 'image'], $block_attrs);
-                $block_attrs['className'] = 'is-style-image';
                 $block = self::transform_block($block_attrs);
             }
 
@@ -168,35 +168,30 @@ class M032MigrateCampaignCoversToP4ColumnsBlock extends MigrationScript
      */
     private static function get_columns_block_attrs(array $block): array
     {
-        $block_attrs = [];
-        foreach ($block['attrs'] as $key => $value) {
-            if (empty($value)) {
-                continue;
-            }
+        $block_attrs['columns_block_style'] = 'image';
+        $block_attrs['columns_title'] = $block['title'] ?? '';
+        // Filter & replace \n with \u003cbr\u003e .
+        $block_attrs['columns_description'] = isset($block['description']) ?
+            str_replace("\n", "\u003cbr\u003e", $block['description']) : '';
 
-            if ('title' === $key) {
-                $block_attrs['columns_title'] = $value;
-            } elseif ('description' === $key) {
-                // Filter & replace \n with \u003cbr\u003e .
-                $block_attrs['columns_description'] = str_replace("\n", "\u003cbr\u003e", $value);
-            } elseif ('tags' === $key) {
-                // To keep the same order of columns, reverse the array.
-                $value = array_reverse($value);
-                foreach ($value as $tag_id) {
-                    $tag = get_tag($tag_id);
-                    if (!$tag) {
-                        continue;
-                    }
-
-                    // Prepare tags(columns) array data.
-                    $block_attrs['columns'][] = [
-                        'attachment' => get_term_meta($tag_id, 'tag_attachment_id', true),
-                        'title' => '#' . html_entity_decode($tag->name),
-                        'cta_link' => get_tag_link($tag),
-                    ];
+        if (isset($block['tags'])) {
+            // To keep the same order of columns, reverse the array.
+            $block['tags'] = array_reverse($block['tags']);
+            foreach ($block['tags'] as $tag_id) {
+                $tag = get_tag($tag_id);
+                if (!$tag) {
+                    continue;
                 }
+
+                // Prepare tags(columns) array data.
+                $block_attrs['columns'][] = [
+                    'attachment' => get_term_meta($tag_id, 'tag_attachment_id', true),
+                    'title' => '#' . html_entity_decode($tag->name),
+                    'cta_link' => get_tag_link($tag),
+                ];
             }
         }
+        $block_attrs['className'] = 'is-style-image';
 
         return $block_attrs;
     }
