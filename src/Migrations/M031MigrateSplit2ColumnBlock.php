@@ -53,7 +53,7 @@ class M031MigrateSplit2ColumnBlock extends MigrationScript
                 }
 
                 // Gathering the data we want from this block.
-                $block_attrs = self::get_split_2_columns_block_attrs($block);
+                $block_attrs = self::get_split_2_columns_block_attrs($block['attrs']);
 
                 // No data, skip this block.
                 if (empty($block_attrs)) {
@@ -127,26 +127,58 @@ class M031MigrateSplit2ColumnBlock extends MigrationScript
      *
      * @param array $block - A parsed split-two-columns block.
      * @return array - A block attrs array.
+     * phpcs:disable Generic.Files.LineLength.MaxExceeded
      */
     private static function get_split_2_columns_block_attrs(array $block): array
     {
         $block_attrs = [];
 
-        $block_attrs['column1']['title'] = $block['attrs']['title'] ?? '';
-        $block_attrs['column1']['description'] = wp_trim_words($block['attrs']['issue_description'] ?? '', 12);
+        // For old split 2 column versions.
+        $issue_id = (int) ( $block['select_issue'] ?? null );
+        $tag_id = (int) ( $block['select_tag'] ?? null );
+        $issue_image_id = (int) ( $block['issue_image'] ?? $block['issue_image_id'] ?? get_post_thumbnail_id($issue_id) ?? 0 );
+        $tag_image_id = (int) ( $block['tag_image'] ?? $block['tag_image_id'] ?? get_term_meta($tag_id, 'tag_attachment_id', true) ?? 0 );
 
-        $block_attrs['column1']['link_text'] = $block['attrs']['issue_link_text'] ?? '';
-        $block_attrs['column1']['link_path'] = $block['attrs']['issue_link_path'] ?? '';
-        $block_attrs['column1']['image_id'] = $block['attrs']['issue_image_id'] ?? '';
-        $block_attrs['column1']['image_src'] = $block['attrs']['issue_image_src'] ?? '';
+        if ($issue_id) {
+            $issue_meta_data = get_post_meta($issue_id);
+            $block['title'] = isset($block['title']) && !empty($block['title']) ? $block['title'] : $issue_meta_data['p4_title'][0] ?? get_the_title($issue_id);
+            $block['issue_description'] = $block['issue_description'] ?? $issue_meta_data['p4_description'][0] ?? '';
+            $block['issue_link_path'] = $block['issue_link_path'] ?? get_permalink($issue_id);
+            $block['issue_link_text'] = $block['issue_link_text'] ?? __('Learn more about this issue', 'planet4-blocks');
 
-        $block_attrs['column2']['title'] = $block['attrs']['tag_name'] ?? '';
-        $block_attrs['column2']['description'] = wp_trim_words($block['attrs']['tag_description'] ?? '', 12);
-        $block_attrs['column2']['button_text'] = $block['attrs']['button_text'] ?? '';
-        $block_attrs['column2']['button_link'] = $block['attrs']['button_link'] ?? '';
-        $block_attrs['column2']['link_path'] = $block['attrs']['tag_link'] ?? '';
-        $block_attrs['column2']['image_id'] = $block['attrs']['tag_image_id'] ?? '';
-        $block_attrs['column2']['image_src'] = $block['attrs']['tag_image_src'] ?? '';
+            $block['issue_image_id'] = $block['issue_image_id'] ?? $issue_image_id;
+            $block['issue_image_src'] = $block['issue_image_src'] ?? ($issue_image_id ? wp_get_attachment_url($issue_image_id) : '');
+        }
+
+        if ($tag_id) {
+            $tag = get_term($tag_id);
+            if ($tag instanceof \WP_Term) {
+                $block['tag_name'] = $block['tag_name'] ?? $tag->name ?? '';
+                $block['tag_link'] = get_tag_link($tag);
+                $block['tag_description'] = $block['tag_description'] ?? $tag->description ?? '';
+
+                $block['tag_image_id'] = $block['tag_image_id'] ?? $tag_image_id;
+                $block['tag_image_src'] = $block['tag_image_src'] ?? ($tag_image_id ? wp_get_attachment_url($tag_image_id) : '');
+
+                $block['button_text'] = $block['button_text'] ?? __('Get involved', 'planet4-blocks');
+                $block['button_link'] = $block['button_link'] ?? $block['tag_link'] ?? '';
+            }
+        }
+
+        $block_attrs['column1']['title'] = $block['title'] ?? '';
+        $block_attrs['column1']['description'] = wp_trim_words($block['issue_description'] ?? '', 12);
+        $block_attrs['column1']['link_text'] = $block['issue_link_text'] ?? '';
+        $block_attrs['column1']['link_path'] = $block['issue_link_path'] ?? '';
+        $block_attrs['column1']['image_id'] = $block['issue_image_id'] ?? '';
+        $block_attrs['column1']['image_src'] = $block['issue_image_src'] ?? '';
+
+        $block_attrs['column2']['title'] = $block['tag_name'] ?? '';
+        $block_attrs['column2']['description'] = wp_trim_words($block['tag_description'] ?? '', 12);
+        $block_attrs['column2']['button_text'] = $block['button_text'] ?? '';
+        $block_attrs['column2']['button_link'] = $block['button_link'] ?? '';
+        $block_attrs['column2']['link_path'] = $block['tag_link'] ?? '';
+        $block_attrs['column2']['image_id'] = $block['tag_image_id'] ?? '';
+        $block_attrs['column2']['image_src'] = $block['tag_image_src'] ?? '';
 
         return $block_attrs;
     }
