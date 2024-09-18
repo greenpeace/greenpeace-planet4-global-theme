@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "planet4-blocks/guestbook",
+    "title": "50 Years GuestBook",
+    "icon": "admin-site-alt2",
+    "supports": {
+      "html": false,
+      "multiple": false
+    },
+    "viewScript": "file:./viewScript.js",
+    "editorScript": "file:./index.js",
+    "style": "",
+    "editorStyle": ""
+}

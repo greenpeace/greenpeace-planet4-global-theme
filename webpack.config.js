@@ -1,4 +1,3 @@
-const defaultConfig = require("./node_modules/@wordpress/scripts/config/webpack.config");    // Require default Webpack config
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const TerserJSPlugin = require('terser-webpack-plugin');
@@ -6,6 +5,7 @@ const FixStyleOnlyEntriesPlugin = require("webpack-fix-style-only-entries");
 const RemovePlugin = require('remove-files-webpack-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const dashDash = require('@greenpeace/dashdash');
+const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
 
 const mediaQueryAliases = {
   '(max-width: 576px)': 'mobile-only',
@@ -16,8 +16,11 @@ const mediaQueryAliases = {
   '(min-width: 1600px)': 'xx-large-and-up',
 };
 
+const isProduction = process.env.NODE_ENV === 'production';
+const mode = isProduction ? 'production' : 'development';
+
 module.exports = {
-  ...defaultConfig,
+  mode,
   entry: {
     index: './assets/src/js/app.js',
     style: './assets/src/scss/style.scss',
@@ -37,8 +40,6 @@ module.exports = {
     GalleryEditorScript: './assets/src/blocks/Gallery/GalleryEditorScript.js',
     GalleryStyle: './assets/src/scss/blocks/Gallery/GalleryStyle.scss',
     GalleryEditorStyle: './assets/src/scss/blocks/Gallery/GalleryEditorStyle.scss',
-    GuestBookScript: './assets/src/blocks/GuestBook/GuestBookScript.js',
-    GuestBookEditorScript: './assets/src/blocks/GuestBook/GuestBookEditorScript.js',
     CarouselHeaderScript: './assets/src/blocks/CarouselHeader/CarouselHeaderScript.js',
     CarouselHeaderEditorScript: './assets/src/blocks/CarouselHeader/CarouselHeaderEditorScript.js',
     AccordionScript: './assets/src/blocks/Accordion/AccordionScript.js',
@@ -64,9 +65,21 @@ module.exports = {
     path: __dirname + '/assets/build'
   },
   module: {
-    ...defaultConfig.module,
     rules: [
-      ...defaultConfig.module.rules,
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: [
+          require.resolve( 'thread-loader' ),
+          {
+            loader: require.resolve( 'babel-loader' ),
+            options: {
+              cacheDirectory: process.env.BABEL_CACHE_DIRECTORY || true,
+              presets: [ require.resolve( '@wordpress/babel-preset-default' ) ],
+            },
+          },
+        ],
+      },
       {
         test: /\.(sass|scss)$/,
         use: [
@@ -109,7 +122,7 @@ module.exports = {
     ]
   },
   plugins: [
-    ...defaultConfig.plugins,
+    new DependencyExtractionWebpackPlugin( { injectPolyfill: true } ),
     // extract css into dedicated file
     new FixStyleOnlyEntriesPlugin(),
     new MiniCssExtractPlugin({
@@ -145,7 +158,6 @@ module.exports = {
     }),
   ],
   optimization: {
-    ...defaultConfig.optimization,
     minimizer: [
       // enable the css minification plugin
       new TerserJSPlugin({}),
@@ -159,5 +171,8 @@ module.exports = {
         }
       })
     ]
-  }
+  },
+  stats: {
+    children: false,
+  },
 };

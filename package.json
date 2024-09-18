@@ -5,9 +5,10 @@
   "author": "Greenpeace International",
   "license": "GPL-3.0",
   "scripts": {
-    "start": "wp-scripts start --config webpack.config.js",
+    "start": "wp-scripts start --config webpack.config.js --mode development",
     "build": "wp-scripts build --config webpack.config.js --mode production",
-    "lint:css": "wp-scripts lint-style"
+    "lint:css": "wp-scripts lint-style",
+    "build:blocks": "wp-scripts build --config=assets/src/webpack.blocks.config.js --webpack-src-dir=assets/src/ --output-path=assets/build/"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.7.2",
@@ -16,9 +17,10 @@
     "@wordpress/components": "^25.7.0",
     "@wordpress/e2e-test-utils-playwright": "^0.8.0",
     "@wordpress/eslint-plugin": "^2.3.0",
-    "@wordpress/scripts": "3.3.0",
+    "@wordpress/scripts": "^4.1.0",
     "autoprefixer": "^9.6.1",
     "bootstrap": "^5.1.3",
+    "copy-webpack-plugin": "^6.4.0",
     "css-loader": "^3.6.0",
     "dotenv": "^16.3.1",
     "eslint-plugin-react": "^7.20.3",
