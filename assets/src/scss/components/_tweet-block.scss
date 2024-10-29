@@ -1,15 +1,19 @@
+@use '../base/abstract';
+@use '../base/variables';
+@use '../base/mixins';
+
 blockquote.twitter-tweet {
-  margin: $sp-7x 0;
+  margin: variables.$sp-7x 0;
   padding-left: 30px;
   border-left: 4px solid var(--grey-500);
   display: inline-block;
 
-  @include medium-and-up {
+  @include mixins.medium-and-up {
     padding-left: 70px;
   }
 
   p {
-    font-size: $font-size-lg;
+    font-size: abstract.$font-size-lg;
     line-height: 1.6;
     margin: 0;
 

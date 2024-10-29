@@ -1,4 +1,5 @@
-@import "./base/tokens";
+@use "./base/tokens";
+@use "./base/fonts";
 
 // Moved from another repo, for history please see https://github.com/greenpeace/planet4-plugin-gutenberg-blocks/blame/f5c532ed5704738136224cde305e9a0ffe614ceb/assets/src/styles/editorOverrides.scss
 .editor-post-title__block textarea.editor-post-title__input {
@@ -6,7 +7,7 @@
     font-family: var(--font-family-heading);
   }
 
-  font-size: $font-size-xl;
+  font-size: fonts.$font-size-xl;
   line-height: 1.225;
   margin-bottom: 30px;
 

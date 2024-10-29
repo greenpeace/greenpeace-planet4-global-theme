@@ -1,41 +1,43 @@
+@use '../base/variables';
+
 // Mobile-only (up to 576px)
 @mixin mobile-only {
-  @media (max-width: #{$small-width}) {
+  @media (max-width: #{abstract.$small-width}) {
     @content;
   }
 }
 
 // Mobile & Up (greater than to 576px)
 @mixin small-and-up {
-  @media (min-width: #{$small-width}) {
+  @media (min-width: #{abstract.$small-width}) {
     @content;
   }
 }
 
 // Tablet & Up (greater than 768px)
 @mixin medium-and-up {
-  @media (min-width: #{$medium-width}) {
+  @media (min-width: #{variables.$medium-width}) {
     @content;
   }
 }
 
 // Large Tablet & Up (greater than 992px)
 @mixin large-and-up {
-  @media (min-width: #{$large-width}) {
+  @media (min-width: #{variables.$large-width}) {
     @content;
   }
 }
 
 // Large Desktop & Up (greater than 1200px)
 @mixin x-large-and-up {
-  @media (min-width: #{$extra-large-width}) {
+  @media (min-width: #{variables.$extra-large-width}) {
     @content;
   }
 }
 
 // Very large Desktop & Up (greater than 1600px)
 @mixin xx-large-and-up {
-  @media (min-width: #{$extra-extra-large-width}) {
+  @media (min-width: #{variables.$extra-extra-large-width}) {
     @content;
   }
 }

@@ -1,9 +1,11 @@
+@use '../base/abstract';
+
 .share-buttons {
   display: flex;
 
   .share-btn {
     border: none;
-    font-size: $font-size-md;
+    font-size: abstract.$font-size-md;
     opacity: 0.9;
     width: 3rem;
     text-align: center;
@@ -29,11 +31,11 @@
   }
 
   .twitter {
-    color: $twitter;
+    color: abstract.$twitter;
   }
 
   .facebook {
-    color: $facebook;
+    color: abstract.$facebook;
   }
 
   .email {
@@ -45,7 +47,7 @@
   }
 
   .whatsapp {
-    color: $whatsapp;
+    color: abstract.$whatsapp;
 
     .icon {
       font-size: 1.5rem;

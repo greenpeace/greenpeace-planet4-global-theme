@@ -12,17 +12,18 @@ Text Domain: planet4-master-theme
 */
 
 // Base
-@import "base/tokens";
-@import "base/colors";
-@import "base/variables";
-@import "base/palette";
-@import "base/functions";
-@import "base/mixins";
-@import "base/fonts";
-@import "base/typography";
-@import "base/icons";
-@import "base/rtl";
-@import "base/body";
+// @use "base/abstract";
+// @import "base/tokens";
+// @import "base/colors";
+// @import "base/variables";
+// @import "base/palette";
+// @import "base/functions";
+// @import "base/mixins";
+// @import "base/fonts";
+// @import "base/typography";
+// @import "base/icons";
+// @import "base/rtl";
+// @import "base/body";
 
 // To be taken care of later
 @import "base/shame";
@@ -36,61 +37,61 @@ Text Domain: planet4-master-theme
 @import "components/tweet-block";
 
 // Layout
-@import "layout/navbar";
-@import "layout/breadcrumbs";
-@import "layout/blocks";
-@import "layout/cookies";
-@import "layout/cookies-settings";
-@import "layout/footer";
-@import "layout/footer-social-media";
-@import "layout/forms";
-@import "layout/gravity-forms";
-@import "layout/page-header";
-@import "layout/page-section";
-@import "layout/tables";
-@import "layout/featured-action";
-@import "layout/wide-blocks";
+// @import "layout/navbar";
+// @import "layout/breadcrumbs";
+// @import "layout/blocks";
+// @import "layout/cookies";
+// @import "layout/cookies-settings";
+// @import "layout/footer";
+// @import "layout/footer-social-media";
+// @import "layout/forms";
+// @import "layout/gravity-forms";
+// @import "layout/page-header";
+// @import "layout/page-section";
+// @import "layout/tables";
+// @import "layout/featured-action";
+// @import "layout/wide-blocks";
 
 // Pages
-@import "pages/page";
-@import "pages/sitemap";
-@import "pages/404";
-@import "pages/evergreen";
-@import "pages/author";
-@import "pages/page_type";
-@import "pages/category";
-@import "pages/listing-page";
+// @import "pages/page";
+// @import "pages/sitemap";
+// @import "pages/404";
+// @import "pages/evergreen";
+// @import "pages/author";
+// @import "pages/page_type";
+// @import "pages/category";
+// @import "pages/listing-page";
 
 // Search
-@import "pages/search/search";
-@import "pages/search/filter-modal";
-@import "pages/search/filter-sidebar";
-@import "pages/search/filtered-tags";
-@import "pages/search/search-bar";
-@import "pages/search/search-results";
-@import "pages/search/sort-filter";
-@import "pages/search/suggested-terms";
+// @import "pages/search/search";
+// @import "pages/search/filter-modal";
+// @import "pages/search/filter-sidebar";
+// @import "pages/search/filtered-tags";
+// @import "pages/search/search-bar";
+// @import "pages/search/search-results";
+// @import "pages/search/sort-filter";
+// @import "pages/search/suggested-terms";
 
 // Vendor overrides
-@import "vendors/fontawesome";
-@import "vendors/usabilla";
-@import "vendors/gtm";
-@import "~lite-youtube-embed";
+// @import "vendors/fontawesome";
+// @import "vendors/usabilla";
+// @import "vendors/gtm";
+// @import "~lite-youtube-embed";
 
 // CSS variables
-@import "base/css-variables";
+// @import "base/css-variables";
 
 // Blocks
-@import "blocks";
+// @import "blocks";
 
 // Overrides
-@import "core-overrides/image";
-@import "core-overrides/heading";
-@import "core-overrides/embed";
-@import "layout/query-loop-overrides";
+// @import "core-overrides/image";
+// @import "core-overrides/heading";
+// @import "core-overrides/embed";
+// @import "layout/query-loop-overrides";
 
 // Variations
-@import "variations/stretched-link";
+// @import "variations/stretched-link";
 
 // Hide WPML footer language switcher.
 .wpml-ls-statics-footer {

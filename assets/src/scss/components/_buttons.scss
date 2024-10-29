@@ -1,3 +1,8 @@
+@use '../base/abstract';
+@use '../base/tokens';
+// @use '../base/variables';
+@use '../base/mixins';
+
 .btn,
 .wp-block-button a,
 .wp-block-file a.wp-block-file__button,
@@ -6,7 +11,7 @@
 [id^="gform_submit_button"] {
   --button-- {
     font-family: var(--font-family-button);
-    font-size: $font-size-sm;
+    font-size: abstract.$font-size-sm;
     line-height: 3;
     text-align: center;
     font-weight: bold;
@@ -70,14 +75,14 @@
 .gfield button:not(.add_list_item):not(.delete_list_item):not([id^="mceu"]),
 .gform_button_select_files {
   _-- {
-    font-size: $font-size-xxs;
+    font-size: abstract.$font-size-xxs;
     line-height: 2.8;
   }
 }
 
 .btn-large {
   _-- {
-    font-size: $font-size-md;
+    font-size: abstract.$font-size-md;
     line-height: 3.1;
   }
 }
@@ -118,7 +123,7 @@
 .gfield button:not(.add_list_item):not(.delete_list_item):not([id^="mceu"]),
 .gform_button_select_files {
   --button-secondary-- {
-    background: rgba($white, 0.7);
+    background: rgba(tokens.$white, 0.7);
     border-color: var(--color-border-button--secondary);
     color: var(--color-text-button--secondary);
 
@@ -175,8 +180,8 @@
       color: var(--grey-900);
     }
 
-    @include large-and-up {
-      font-size: $font-size-md;
+    @include mixins.large-and-up {
+      font-size: abstract.$font-size-md;
     }
   }
   margin: 0;
@@ -206,9 +211,9 @@ button.load-more-mt {
   border-color: var(--gp-green-100);
   color: var(--grey-900);
   background-color: var(--color-background-tag_button--passive);
-  margin-inline-end: $sp-2;
-  margin-bottom: $sp-2;
-  padding: 0 $sp-2;
+  margin-inline-end: abstract.$sp-2;
+  margin-bottom: abstract.$sp-2;
+  padding: 0 abstract.$sp-2;
   transition-duration: 100ms;
 
   &:visited {

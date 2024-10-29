@@ -1,9 +1,11 @@
+@use './tokens';
+
 $bucket: "https://www.greenpeace.org/static/planet4-assets/";
 
 $fonts: (
-  #{$font-family-primary},
-  #{$font-family-secondary},
-  #{$font-family-tertiary},
+  #{tokens.$font-family-primary},
+  #{tokens.$font-family-secondary},
+  #{tokens.$font-family-tertiary},
 );
 
 @each $font in $fonts {

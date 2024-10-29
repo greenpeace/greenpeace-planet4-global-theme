@@ -1,18 +1,22 @@
+@use '../base/abstract';
+@use '../base/mixins';
+@use '../base/typography';
+
 @mixin blockquote {
-  font-size: $font-size-lg;
+  font-size: abstract.$font-size-lg;
   line-height: 1.4;
   font-style: italic;
 
-  @include medium-and-up {
-    font-size: $font-size-xxl;
+  @include mixins.medium-and-up {
+    font-size: abstract.$font-size-xxl;
   }
 
-  @include large-and-up {
+  @include mixins.large-and-up {
     max-width: 80%;
   }
 
-  @include x-large-and-up {
-    font-size: $font-size-xxl;
+  @include mixins.x-large-and-up {
+    font-size: abstract.$font-size-xxl;
   }
 }
 
@@ -22,25 +26,33 @@ blockquote > p {
 }
 
 blockquote > h5 {
+<<<<<<< Updated upstream
   @include blockquote;
   font-family: var(--body--font-family);
   font-size: $font-size-xxl;
+=======
+  font-size: abstract.$font-size-xxl;
+>>>>>>> Stashed changes
 
-  @include medium-and-up {
-    font-size: $font-size-xxl;
+  @include mixins.medium-and-up {
+    font-size: abstract.$font-size-xxl;
   }
 }
 
 blockquote > h6 {
+<<<<<<< Updated upstream
   @include blockquote;
   font-family: var(--body--font-family);
   font-size: $font-size-xl;
+=======
+  font-size: abstract.$font-size-xl;
+>>>>>>> Stashed changes
 
-  @include medium-and-up {
-    font-size: $font-size-xl;
+  @include mixins.medium-and-up {
+    font-size: abstract.$font-size-xl;
   }
 
-  @include x-large-and-up {
-    font-size: $font-size-xl;
+  @include mixins.x-large-and-up {
+    font-size: abstract.$font-size-xl;
   }
 }

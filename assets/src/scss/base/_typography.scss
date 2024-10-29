@@ -1,3 +1,6 @@
+@use '../base/mixins';
+@use '../base/fonts';
+
 html {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -12,7 +15,7 @@ li {
     font-size: var(--font-size-m--font-family-secondary);
     line-height: var(--line-height-m--font-family-secondary);
 
-    @include x-large-and-up {
+    @include mixins.x-large-and-up {
       font-size: var(--font-size-xl--font-family-secondary);
       line-height: var(--line-height-xl--font-family-secondary);
     }
@@ -46,17 +49,17 @@ h6 {
 h1 {
   _-- {
     line-height: 1.225;
-    font-size: $font-size-xxl;
+    font-size: fonts.$font-size-xxl;
   }
   margin-bottom: 30px;
 
-  @include medium-and-up {
+  @include mixins.medium-and-up {
     _-- {
-      font-size: $font-size-xxxxl;
+      font-size: fonts.$font-size-xxxxl;
     }
   }
 
-  @include large-and-up {
+  @include mixins.large-and-up {
     margin-bottom: 48px;
   }
 }
@@ -64,60 +67,60 @@ h1 {
 h2 {
   _-- {
     line-height: 1.38;
-    font-size: $font-size-xl;
+    font-size: fonts.$font-size-xl;
   }
   margin-bottom: 5px;
 
-  @include medium-and-up {
+  @include mixins.medium-and-up {
     _-- {
-      font-size: $font-size-xxl;
+      font-size: fonts.$font-size-xxl;
     }
   }
 
-  @include x-large-and-up {
+  @include mixins.x-large-and-up {
     margin-bottom: 24px;
   }
 }
 
 h3 {
   _-- {
-    font-size: $font-size-lg;
+    font-size: fonts.$font-size-lg;
   }
 
-  @include medium-and-up {
+  @include mixins.medium-and-up {
     _-- {
-      font-size: $font-size-xl;
+      font-size: fonts.$font-size-xl;
     }
   }
 }
 
 h4 {
   _-- {
-    font-size: $font-size-md;
+    font-size: fonts.$font-size-md;
   }
 
-  @include medium-and-up {
+  @include mixins.medium-and-up {
     _-- {
-      font-size: $font-size-lg;
+      font-size: fonts.$font-size-lg;
     }
   }
 }
 
 h5 {
   _-- {
-    font-size: $font-size-sm;
+    font-size: fonts.$font-size-sm;
   }
 
-  @include medium-and-up {
+  @include mixins.medium-and-up {
     _-- {
-      font-size: $font-size-md;
+      font-size: fonts.$font-size-md;
     }
   }
 }
 
 h6 {
   _-- {
-    font-size: $font-size-sm;
+    font-size: fonts.$font-size-sm;
   }
 }
 
@@ -153,6 +156,6 @@ figcaption {
   min-height: 24px; // This is needed in case there's a link in the caption, for our styles
 
   a {
-    @include shared-link-styles;
+    @include mixins.shared-link-styles;
   }
 }
