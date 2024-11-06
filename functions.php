@@ -517,3 +517,174 @@ add_action(
     10,
     3
 );
+
+/**
+ * Given an attachment ID, searches for any post with that attachment used
+ * as a featured image, or if it is present in the content of the post.
+ * (Note above known issues).
+ *
+ * @param $id int The image ID.
+ *
+ * @return array All post IDs containing this image, or using it as featured image.
+ */
+function get_image_posts( $id ) {
+	global $wpdb;
+	$cache_key = "imgpost$id";
+	$cache = wp_cache_get( $cache_key );
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
+	$att  = get_post_custom( $id );
+	$file = $att['_wp_attached_file'][0];
+	//Do not take full path as different image sizes could
+	// have different month, year folders due to theme and image size changes
+	$file = sprintf(
+		'%s.%s',
+		pathinfo( $file, PATHINFO_FILENAME ),
+		pathinfo( $file, PATHINFO_EXTENSION )
+	);
+
+	$sql = "SELECT {$wpdb->posts}.ID
+        FROM {$wpdb->posts}
+        INNER JOIN {$wpdb->postmeta}
+        ON ({$wpdb->posts}.ID = {$wpdb->postmeta}.post_id)
+        WHERE {$wpdb->posts}.post_type IN ('post', 'page', 'campaign', 'action')
+        AND (({$wpdb->posts}.post_status = 'publish'))
+        AND ( ({$wpdb->postmeta}.meta_key = '_thumbnail_id'
+            AND CAST({$wpdb->postmeta}.meta_value AS CHAR) = '%d')
+            OR ( {$wpdb->posts}.post_content LIKE %s )
+        )
+        GROUP BY {$wpdb->posts}.ID";
+
+	$prepared_sql = $wpdb->prepare( $sql, $id, '%src="%' . $wpdb->esc_like( $file ) . '"%' );
+
+	$results = $wpdb->get_col( $prepared_sql );
+
+	wp_cache_add( $cache_key, $results, null, 3600 * 24 );
+
+	return $results;
+}
+
+/**
+ * Returns the size of a file without downloading it, or -1 if the file
+ * size could not be determined.
+ *
+ * @param $url - The location of the remote file to download. Cannot
+ * be null or empty.
+ *
+ * @return int The size of the file referenced by $url, or -1 if the size
+ * could not be determined.
+ */
+function curl_get_file_size( $url ) {
+	// Assume failure.
+	$result = - 1;
+
+	$curl = curl_init( $url );
+
+	// Issue a HEAD request and follow any redirects.
+	curl_setopt( $curl, CURLOPT_NOBODY, true );
+	curl_setopt( $curl, CURLOPT_HEADER, true );
+	curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
+	curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, true );
+
+	$data = curl_exec( $curl );
+	curl_close( $curl );
+	if ( $data ) {
+		$content_length = 'unknown';
+		$status         = 'unknown';
+
+		if ( preg_match( '/^HTTP\/1\.[01] (\d\d\d)/', $data, $matches ) ) {
+			$status = (int) $matches[1];
+		}
+
+		if ( preg_match( '/Content-Length: (\d+)/', $data, $matches ) ) {
+			$content_length = (int) $matches[1];
+		}
+
+		// http://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+		if ( 200 === $status || ( $status > 300 && $status <= 308 ) ) {
+			$result = $content_length;
+		}
+	}
+
+	return $result;
+}
+
+/**
+ * @param $size int The bytes.
+ * @param $precision int How many decimals.
+ *
+ * @return string Formatted file size.
+ */
+function formatBytes( int $size, int $precision = 2 ) {
+	$base     = log( $size, 1024 );
+	$suffixes = [ '', 'K', 'M', 'G', 'T' ];
+
+	return round( 1024 ** ( $base - floor( $base ) ), $precision ) . ' ' . $suffixes[ floor( $base ) ];
+}
+
+add_menu_page(
+	__( 'PNG checkup', 'planet4-master-theme-backend' ),
+	__( 'PNG checkup', 'planet4-master-theme-backend' ),
+	'edit_posts',
+	'png-checkup',
+	function () {
+		$args = [
+			'fields'         => 'ids',
+			'post_type'      => 'attachment',
+			'posts_per_page' => - 1,
+			'post_status'    => 'any',
+			'post_mime_type' => 'image/png',
+		];
+
+		$results = new WP_Query( $args );
+		$images = array_map( function ( $image_id ) {
+			$src        = wp_get_attachment_image_src( $image_id, 'full' )[0];
+			$size_check = curl_get_file_size( $src );
+			$size       = $size_check <= 0 ? '' : formatBytes( $size_check );
+
+			return [
+				'id'         => $image_id,
+				'src'        => $src,
+				'size'       => $size,
+				'size_bytes' => $size_check,
+			];
+		}, $results->posts );
+
+		uasort( $images, fn( $a, $b ) => $b['size_bytes'] <=> $a['size_bytes'] );
+
+		echo '<h1>PNG Report</h1>';
+		echo '<p>' . count($images) . ' PNG images found.</p>';
+		echo '<table>';
+		foreach ( $images as $image ) {
+			$size      = $image['size'];
+			$src       = $image['src'];
+			$image_id  = $image['id'];
+			$edit_link = get_edit_post_link( $image_id );
+			$title     = get_the_title( $image_id );
+			echo '<tr>';
+			echo '<td>' . wp_get_attachment_image( $image_id ) . '</td>';
+			echo "<td style='text-align: right'>$size</td>";
+			echo "<td><a href=\"$edit_link\">#$image_id </a> - <a href=\"$src\">$title</a></td>";
+
+			$image_posts = get_image_posts( $image_id );
+
+			echo '<td>';
+			echo '<ul style="list-style-type: circle; padding-left: 100px">';
+			foreach ( $image_posts as $id ) {
+				$src       = get_permalink( $id );
+				$edit_link = get_edit_post_link( $id );
+				$title     = get_the_title( $id );
+				echo "<li><a href=\"$src\">#$id ($title)</a> ";
+				echo "<a href=\"$edit_link\">Edit</a></li>";
+			}
+			echo '</ul>';
+			echo '</td>';
+			echo '</tr>';
+		}
+		echo '</table>';
+	},
+	'dashicons-format-image',
+	11
+);
