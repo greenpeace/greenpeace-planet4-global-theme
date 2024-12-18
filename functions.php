@@ -100,6 +100,7 @@ add_action(
         Rest::register_endpoints();
         Api\Search::register_endpoint();
         Api\Settings::register_endpoint();
+        Api\AnalyticsValues::register_endpoint();
     }
 );
 

@@ -2,7 +2,7 @@ import edit from './edit';
 import save from './save';
 import templateList from './template-list';
 
-const {registerBlockType, getBlockTypes} = wp.blocks;
+const {registerBlockType} = wp.blocks;
 const {getCurrentPostType} = wp.data.select('core/editor');
 
 const setSupport = metadata => {
@@ -25,12 +25,6 @@ export const registerBlockTemplates = blockTemplates => {
   templates.forEach(blockTemplate => {
     // eslint-disable-next-line prefer-const
     let {metadata, template, templateLock = false} = blockTemplate;
-
-    // To be removed when we finally migrate all patterns to master theme
-    const blockAlreadyExists = getBlockTypes().find(block => block.name === metadata.name);
-    if (blockAlreadyExists) {
-      return;
-    }
 
     if (metadata.postTypes && !metadata.postTypes.includes(postType)) {
       return null;
