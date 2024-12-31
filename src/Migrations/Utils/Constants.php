@@ -17,6 +17,7 @@ class Constants
     public const BLOCK_P4_COLUMNS = self::PREFIX_P4_BLOCKS . '/columns';
     public const BLOCK_ENFORM = self::PREFIX_P4_BLOCKS . '/enform';
     public const BLOCK_POSTS_LIST = self::PREFIX_P4_BLOCKS . '/posts-list';
+    public const BLOCK_ARTICLES = self::PREFIX_P4_BLOCKS . '/articles';
 
     public const BLOCK_EMBED = self::PREFIX_CORE_BLOCKS . '/embed';
     public const BLOCK_AUDIO = self::PREFIX_CORE_BLOCKS . '/audio';
