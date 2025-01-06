@@ -19,15 +19,17 @@ function requireAll(r) {
 
 requireAll(require.context('../images/icons/', true, /\.svg$/));
 
-setupCookies();
-setupHeader();
-setupLoadMore();
-setupPDFIcon();
-setupSearch();
-setupExternalLinks();
-setupListingPages();
-setupQueryLoopCarousel();
-removeNoPostText();
-removeRelatedPostsSection();
-setupClickabelActionsListCards();
-setupCountrySelector();
+document.addEventListener('DOMContentLoaded', () => {
+  setupCookies();
+  setupHeader();
+  setupLoadMore();
+  setupPDFIcon();
+  setupSearch();
+  setupExternalLinks();
+  setupListingPages();
+  setupQueryLoopCarousel();
+  removeNoPostText();
+  removeRelatedPostsSection();
+  setupClickabelActionsListCards();
+  setupCountrySelector();
+});
