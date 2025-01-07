@@ -9,15 +9,12 @@ export const registerActionsListBlock = () => {
   const {registerBlockVariation} = wp.blocks;
   const {__} = wp.i18n;
 
-  // const IS_NEW_IA = window.p4_vars.options.new_ia === 'on' ||
-  //   window.p4_vars.options.new_ia === true;
-  const IS_NEW_IA = window.p4_vars.options.new_ia === 'on';
+  const IS_NEW_IA = window.p4_vars.options.new_ia;
   const ACT_PAGE = window.p4_vars.options.take_action_page || -1;
+
   const queryPostType = IS_NEW_IA ? 'p4_action' : 'page';
 
   console.log("+++ IS_NEW_IA: %d ACT_PAGE: %d queryPostType: %s +++", IS_NEW_IA, ACT_PAGE, queryPostType)
-  // +++ IS_NEW_IA: 1 ACT_PAGE: 9 queryPostType: p4_action +++
-  // +++ IS_NEW_IA: 0 ACT_PAGE: 9 queryPostType: page +++
   console.log('Query', {
     pages: 0,
     perPage: 3,
