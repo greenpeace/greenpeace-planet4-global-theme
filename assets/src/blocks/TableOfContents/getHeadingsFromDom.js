@@ -9,7 +9,9 @@ export const getHeadingsFromDom = selectedLevels => {
   }
 
   // Get all heading tags that we need to query
-  const headingsSelector = selectedLevels.map(level => `:not(.table-of-contents-block) > h${level.heading}`);
+  const headingsSelector = selectedLevels.map(
+    level => `:not(.table-of-contents-block):not(.secondary-navigation-block) > h${level.heading}`
+  );
 
   const usedAnchors = [];
 

@@ -18,6 +18,7 @@ import {addButtonLinkPasteWarning} from './block-editor/addButtonLinkPasteWarnin
 import {addBlockFilters} from './block-editor/BlockFilters';
 import {replaceTaxonomyTermSelectors} from './block-editor/replaceTaxonomyTermSelectors';
 import {setupImageBlockExtension} from './block-editor/setupImageBlockExtension';
+import {registerSecondaryNavigationBlock} from './blocks/SecondaryNavigation/SecondaryNavigationBlock';
 
 wp.domReady(() => {
   // Blocks
@@ -29,6 +30,7 @@ wp.domReady(() => {
   registerTimelineBlock();
   registerPostsListBlock();
   registerTopicLinkBlock();
+  registerSecondaryNavigationBlock();
 
   // Block Templates
   registerBlockTemplates();

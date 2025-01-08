@@ -10,6 +10,7 @@ import {ColumnsFrontend} from './blocks/Columns/ColumnsFrontend';
 import {TopicLinkFrontend} from './blocks/TopicLink/TopicLinkFrontend';
 import {setupLightboxForImages} from './blocks/components/Lightbox/setupLightboxForImages';
 import {setupParallax} from './blocks/components/Parallax/setupParallax';
+import {SecondaryNavigationFrontend} from './blocks/SecondaryNavigation/SecondaryNavigationFrontend';
 
 // Render React components
 const COMPONENTS = {
@@ -17,6 +18,7 @@ const COMPONENTS = {
   'planet4-blocks/happypoint': HappyPointFrontend,
   'planet4-blocks/columns': ColumnsFrontend,
   'planet4-blocks/topic-link': TopicLinkFrontend,
+  'planet4-blocks/secondary-navigation': SecondaryNavigationFrontend,
 };
 
 document.addEventListener('DOMContentLoaded', () => {
