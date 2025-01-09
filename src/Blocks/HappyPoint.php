@@ -95,7 +95,8 @@ class HappyPoint extends BaseBlock
     public static function get_data(object $fields): array
     {
         $options = get_option('planet4_options');
-        $image_id = $fields['id'] ? $fields['id'] : $options['happy_point_bg_image_id'];
+        $image_from_settings = $options['happy_point_bg_image_id'] ?? '';
+        $image_id = $fields['id'] ?? $image_from_settings;
         $img_meta = wp_get_attachment_metadata($image_id);
         $image_alt = get_post_meta($image_id, '_wp_attachment_image_alt', true);
 
@@ -105,7 +106,7 @@ class HappyPoint extends BaseBlock
         $data['background_sizes'] = wp_calculate_image_sizes('retina-large', null, null, $image_id);
         $data['default_content_provider'] = $options['happy_point_content_provider'] ?? 'iframe_url';
         $data['engaging_network_id'] = $options['engaging_network_form_id'] ?? '';
-        $data['default_image'] = get_bloginfo('template_directory') . '/images/happy-point-block-bg.jpg';
+        $data['default_image'] = get_template_directory_uri() . '/images/happy-point-block-bg.jpg';
         $data['background_alt'] = empty($image_alt) ? __('Background image', 'planet4-blocks') : $image_alt;
         $data['default_embed_code'] = $options['happy_point_embed_code'] ?? '';
 
