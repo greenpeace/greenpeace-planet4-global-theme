@@ -83,9 +83,6 @@ class Covers extends BaseBlock
                     }
 
                     $attributes['covers'] = self::get_covers($attributes);
-                    // var_dump(self::get_covers($attributes));
-                    // die();
-                    // $attributes['covers'] = [];
 
                     return self::hydrate_frontend($attributes, $content);
                 },
