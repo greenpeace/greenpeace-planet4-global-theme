@@ -88,6 +88,13 @@
   }
 }
 
+.wp-block-file .wp-block-file__button {
+  overflow: unset;
+  padding: 0 1em;
+  margin-inline-start: 1em;
+  font-size: .8em;
+}
+
 .wp-block-button.is-style-cta .wp-block-button__link[role="textbox"] {
   --button-primary-- {
     background: var(--p4-action-yellow-500);
