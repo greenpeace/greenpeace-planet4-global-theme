@@ -95,8 +95,7 @@ class HappyPoint extends BaseBlock
     public static function get_data(object $fields): array
     {
         $options = get_option('planet4_options');
-        $image_from_settings = $options['happy_point_bg_image_id'] ?? '';
-        $image_id = $fields['id'] ?? $image_from_settings;
+        $image_id = $fields['id'] ?? $options['happy_point_bg_image_id'] ?? '';
         $img_meta = wp_get_attachment_metadata($image_id);
         $image_alt = get_post_meta($image_id, '_wp_attachment_image_alt', true);
 
