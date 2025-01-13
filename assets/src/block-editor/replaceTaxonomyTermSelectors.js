@@ -1,12 +1,18 @@
 import {AssignOnlyFlatTermSelector} from './AssignOnlyFlatTermSelector';
 import {TermSelector} from './TermSelector';
+const {Component} = wp.element;
 
+/**
+ * Replace some native Components from taxonomy selection with our custom components.
+ *
+ * @param {Component} OriginalComponent The original WordPress component.
+ *
+ * @return {Component} The component needed based on the taxonomy.
+ */
 const customizeTaxonomySelectors = OriginalComponent => props => {
-  // For following taxonomies it should not be possible to create new terms on the post edit page
-  const isCustomComponent = ['p4-page-type', 'post_tag'].includes(props.slug);
-
+  // For post types and tags, it should not be possible to create new terms on the post edit page
   let component = OriginalComponent;
-  if (isCustomComponent) {
+  if (['p4-page-type', 'post_tag'].includes(props.slug)) {
     component = props.slug === 'post_tag' ? TermSelector : AssignOnlyFlatTermSelector;
   }
 

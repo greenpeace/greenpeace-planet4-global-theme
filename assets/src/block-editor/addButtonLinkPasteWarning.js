@@ -1,3 +1,6 @@
+/**
+ * Add a warning in case an editor tries to paste a URL in a Button block.
+ */
 export const addButtonLinkPasteWarning = () => document.addEventListener('DOMContentLoaded', () => {
   document.onpaste = event => {
     const {target} = event;
