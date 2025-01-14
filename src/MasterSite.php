@@ -2,7 +2,6 @@
 
 namespace P4\MasterTheme;
 
-use P4\MasterTheme\Blocks\QueryLoopExtension;
 use P4\MasterTheme\Features\Dev\CoreBlockPatterns;
 use P4\MasterTheme\Features\LazyYoutubePlayer;
 use Timber\Timber;
@@ -327,6 +326,20 @@ class MasterSite extends TimberSite
             },
             10
         );
+
+        // Fix WPML-related RTL issue.
+        $remove_rtl_fix = function (): void {
+            global $sitepress;
+            // This RTL fix does not seem a good idea.
+            // Probably it was a bad attempt at solving the issues `url_to_postid` creates.
+            remove_action('wp_head', [$sitepress, 'rtl_fix']);
+            remove_action('admin_print_styles', [$sitepress, 'rtl_fix']);
+
+            // This caused `switch_lang` to get called. As a result the RTL fix messed up.
+            remove_filter('url_to_postid', [$sitepress, 'url_to_postid']);
+        };
+        $remove_rtl_fix();
+        add_action('wpml_after_startup', $remove_rtl_fix, 10, 0);
 
         QueryLoopPagination::hooks();
         AuthorPage::hooks();
