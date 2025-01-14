@@ -2,6 +2,7 @@
 
 namespace P4\MasterTheme;
 
+use P4\MasterTheme\Blocks\QueryLoopExtension;
 use P4\MasterTheme\Features\Dev\CoreBlockPatterns;
 use P4\MasterTheme\Features\LazyYoutubePlayer;
 use Timber\Timber;
@@ -327,6 +328,7 @@ class MasterSite extends TimberSite
             10
         );
 
+        QueryLoopPagination::hooks();
         AuthorPage::hooks();
         Search\Search::hooks();
         Sendgrid::hooks();
