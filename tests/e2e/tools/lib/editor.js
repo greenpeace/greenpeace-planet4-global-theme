@@ -49,7 +49,7 @@ async function addTag({page, editor}, tag) {
  */
 async function addPostType({page, editor}, postType) {
   const editorSettings = await openComponentPanel({page, editor}, 'Post Types');
-  await editorSettings.getByLabel('Add new Post Type').type(postType);
+  await editorSettings.getByLabel('Add new Post Type').fill(postType);
   await editorSettings.getByRole('option', {name: postType}).click();
 }
 

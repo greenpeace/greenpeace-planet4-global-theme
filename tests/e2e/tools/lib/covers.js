@@ -26,29 +26,29 @@ async function addCoversBlock(page, editor, style = '') {
     const postsInput = await settings.getByLabel('Select pages');
     await postsInput.scrollIntoViewIfNeeded();
 
-    await postsInput.type(PAGE_NAMES[0]);
+    await postsInput.fill(PAGE_NAMES[0]);
     await suggestions.getByRole('option').first().click();
 
-    await postsInput.type(PAGE_NAMES[1]);
+    await postsInput.fill(PAGE_NAMES[1]);
     await suggestions.getByRole('option').first().click();
 
-    await postsInput.type(PAGE_NAMES[2]);
+    await postsInput.fill(PAGE_NAMES[2]);
     await suggestions.getByRole('option').first().click();
   } else {
     // Fill in the tags.
     const tagsInput = await settings.getByLabel('Select Tags');
     await tagsInput.scrollIntoViewIfNeeded();
 
-    await tagsInput.type(TAG_NAMES[0]);
+    await tagsInput.fill(TAG_NAMES[0]);
     await suggestions.getByRole('option').first().click();
 
-    await tagsInput.type(TAG_NAMES[1]);
+    await tagsInput.fill(TAG_NAMES[1]);
     await suggestions.getByRole('option').first().click();
 
-    await tagsInput.type(TAG_NAMES[2]);
+    await tagsInput.fill(TAG_NAMES[2]);
     await suggestions.getByRole('option').first().click();
 
-    await tagsInput.type(TAG_NAMES[3]);
+    await tagsInput.fill(TAG_NAMES[3]);
     await suggestions.getByRole('option').first().click();
   }
   await page.getByLabel('Button Text').fill('Read more');
