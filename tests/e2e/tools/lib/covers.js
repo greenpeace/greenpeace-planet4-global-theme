@@ -4,7 +4,7 @@ import {expect} from './test-utils.js';
 const TAG_NAMES = ['Climate', 'Oceans', 'renewables', 'Consumption'];
 const PAGE_NAMES = ['Vestibulum leo libero', 'Consectetur adipiscing elit', 'Vestibulum placerat'];
 
-async function addCoversBlock(page, editor, style = '') {
+async function addCoversBlock(page, style = '') {
   // Add Covers block.
   await searchAndInsertBlock({page}, 'Covers');
 
