@@ -89,7 +89,7 @@ jobs:
 
   frontend-tests:
     docker:
-      - image: greenpeaceinternational/p4-unit-tests:node18.20.4
+      - image: greenpeaceinternational/p4-unit-tests:node20.18.0
         auth:
           <<: *docker_auth
     steps:
@@ -108,7 +108,7 @@ jobs:
 
   commitlint:
     docker:
-      - image: greenpeaceinternational/p4-unit-tests:node18.20.4
+      - image: greenpeaceinternational/p4-unit-tests:node20.18.0
         auth:
           <<: *docker_auth
     steps:
@@ -119,7 +119,7 @@ jobs:
 
   a11y-tests:
     docker:
-      - image: greenpeaceinternational/p4-unit-tests:node18.20.4
+      - image: greenpeaceinternational/p4-unit-tests:node20.18.0
         auth:
           <<: *docker_auth
     working_directory: /home/circleci/
@@ -258,7 +258,7 @@ jobs:
   create-zip:
     resource_class: xlarge
     docker:
-      - image: cimg/node:18.20.4
+      - image: cimg/node:20.18.0
         auth:
           <<: *docker_auth
     steps:
@@ -305,7 +305,7 @@ jobs:
 
   publish-zip:
     docker:
-      - image: cimg/node:18.20.4
+      - image: cimg/node:20.18.0
         auth:
           <<: *docker_auth
     steps:
