@@ -22,11 +22,8 @@ test('Test Articles block', async ({page, admin, editor}) => {
   await expect(editorButton).toHaveText('Load more');
 
   // Change title, description and button text.
-  await editorTitle.click();
   await editorTitle.fill(TEST_TITLE);
-  await editorDescription.click();
   await editorDescription.fill(TEST_DESCRIPTION);
-  await editorButton.click();
   await editorButton.fill(TEST_BUTTON_TEXT);
 
   // Change amount of articles from 3 to 4.
