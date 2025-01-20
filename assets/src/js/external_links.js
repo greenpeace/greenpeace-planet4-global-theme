@@ -3,7 +3,7 @@ const {__, sprintf} = wp.i18n;
 export const setupExternalLinks = () => {
   const siteURL = window.location.host;
 
-  const linkSelector = ['.page-content', 'article', '.author-details'].map(sel => `${sel} a:not(.btn):not(.cover-card-heading):not(.wp-block-button__link):not(.share-btn):not([href*="${siteURL}"]):not([href*=".pdf"]):not([href^="/"]):not([href^="#"]):not([href^="javascript:"])`).join(', ');
+  const linkSelector = ['.page-content', 'article', '.author-details'].map(sel => `${sel} a:not(.btn):not(.cover-card-heading):not(.wp-block-button__link):not(.share-btn):not([href*="${siteURL}"]):not([href*=".pdf"]):not([href^="/"]):not([href^="#"]):not([href^="javascript:"]):not(.page-numbers)`).join(', ');
   const links = [...document.querySelectorAll(linkSelector)];
 
   links.forEach(link => {
