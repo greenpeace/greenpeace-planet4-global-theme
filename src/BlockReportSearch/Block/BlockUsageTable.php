@@ -272,6 +272,12 @@ class BlockUsageTable extends WP_List_Table
             'post_status' => 'Status',
         ];
 
+        // This is a temporary fix to identify problems with the columns migrated here:
+        // https://jira.greenpeace.org/browse/PLANET-7489
+        if (isset($_GET['name']) && $_GET['name'] === 'planet4-blocks/columns') {
+            $default_columns['block_cols'] = 'Columns';
+        }
+
         $this->columns = array_merge(
             [ $this->group_by => $default_columns[ $this->group_by ] ],
             $default_columns
@@ -485,6 +491,33 @@ class BlockUsageTable extends WP_List_Table
                 : $content
             )
         );
+    }
+
+    /**
+     * Add the number of columns to the table.
+     *
+     * This is a temporary fix to identify problems with the columns migrated here:
+     * https://jira.greenpeace.org/browse/PLANET-7489
+     * We need this function to identify P4 columns blocks using more than 4 columns.
+     *
+     * @param array $item Item.
+     * @phpcs:disable SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     */
+    public function column_block_cols($item): string
+    {
+        $content = $item['block_attrs'] ?? null;
+
+        if (empty($content)) {
+            return '';
+        }
+
+        $cols = $content['columns'] ? count($content['columns']) : '0';
+
+        if ($cols > 4) {
+            return "<span style='color: red;'>$cols - Fix needed!</span>";
+        }
+
+        return (string)$cols;
     }
 
     /**
