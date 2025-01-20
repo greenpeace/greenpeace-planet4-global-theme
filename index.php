@@ -20,6 +20,7 @@ use P4\MasterTheme\ListingPage;
 use Timber\Timber;
 
 $context = Timber::get_context();
+$posts = Timber::get_posts();
 $templates = [ 'index.twig' ];
 
 if (is_home()) {
@@ -33,13 +34,33 @@ if (is_home()) {
     $context['title'] = ( $page_meta_data['p4_title'] ?? '' )
         ? ( $page_meta_data['p4_title'] ?? '' )
         : html_entity_decode($context['wp_title'] ?? '');
-    $context['posts'] = Timber::get_posts();
 
     Context::set_header($context, $page_meta_data, $context['title']);
     Context::set_background_image($context);
     Context::set_og_meta_fields($context, $post);
     Context::set_campaign_datalayer($context, $page_meta_data);
     Context::set_utm_params($context, $post);
+
+    $MIN_STICKY_POSTS = 4;
+    $sticky_posts = array_filter($posts, function ($p) {
+        if(is_sticky($p->ID)) {
+            // echo $p->ID . "</br>";
+            return $p;
+        }
+    });
+
+    if(count($sticky_posts) > $MIN_STICKY_POSTS) {
+        $posts = array_filter($posts, function ($p) {
+            if(!is_sticky($p->ID)) {
+                return $p;
+            }
+        });
+    } else {
+        $sticky_posts = array();
+    }
+
+    $context['posts'] = $posts;
+    $context['sticky_posts'] = $sticky_posts;
 
     array_unshift($templates, 'all-posts.twig');
 
