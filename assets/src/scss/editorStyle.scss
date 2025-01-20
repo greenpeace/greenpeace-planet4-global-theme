@@ -16,6 +16,7 @@
 @import "components/buttons";
 @import "components/share-buttons";
 @import "components/image-hover-buttons";
+@import "components/character-counter";
 @import "base/typography";
 @import "layout/tables";
 @import "layout/page-header";
@@ -65,4 +66,17 @@
 .block-edit-mode-warning {
   padding: $sp-2;
   margin: 0;
+}
+
+.EmptyMessage {
+  font-family: var(--font-family-primary);
+  padding: $sp-4;
+  background: var(--gp-green-200);
+}
+
+.HTMLSidebarHelp {
+  padding-top: $sp-1;
+  padding-bottom: $sp-2;
+  font-size: 13px;
+  line-height: 1.5;
 }

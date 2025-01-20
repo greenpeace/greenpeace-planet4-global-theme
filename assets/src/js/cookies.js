@@ -1,8 +1,8 @@
 /* global dataLayer */
 export const setupCookies = () => {
   window.dataLayer = window.dataLayer || [];
-  const ENABLE_ANALYTICAL_COOKIES = window.p4bk_vars.enable_analytical_cookies;
-  const ENABLE_GOOGLE_CONSENT_MODE = window.p4bk_vars.enable_google_consent_mode;
+  const ENABLE_ANALYTICAL_COOKIES = window.p4_vars.options.enable_analytical_cookies;
+  const ENABLE_GOOGLE_CONSENT_MODE = window.p4_vars.options.enable_google_consent_mode;
 
   // Possible cookie values
   const ONLY_NECESSARY = '1';

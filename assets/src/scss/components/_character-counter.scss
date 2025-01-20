@@ -1,0 +1,25 @@
+.counted-field-wrapper {
+  position: relative;
+  margin-bottom: 16px;
+
+  textarea {
+    // Needed to ensure same spacing as input[type=text].
+    display: block;
+  }
+}
+
+.character-counter {
+  position: absolute;
+  bottom: -1.7em;
+  right: 0;
+  font-size: .7em;
+  color: var(--grey-800);
+
+  &.character-limit-exceeded {
+    color: var(--red-500);
+  }
+
+  &.character-limit-warning {
+    color: orange;
+  }
+}

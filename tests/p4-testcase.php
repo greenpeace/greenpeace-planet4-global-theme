@@ -153,7 +153,7 @@ class P4TestCase extends WP_UnitTestCase
             [
                 'name' => 'Petition',
                 'taxonomy' => 'action-type',
-                'slug' => 'petion',
+                'slug' => 'petition',
             ]
         );
         $this->factory->term->create(

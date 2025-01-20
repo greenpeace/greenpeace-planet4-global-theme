@@ -9,6 +9,7 @@ import {HappyPointFrontend} from './blocks/HappyPoint/HappyPointFrontend';
 import {ColumnsFrontend} from './blocks/Columns/ColumnsFrontend';
 import {TopicLinkFrontend} from './blocks/TopicLink/TopicLinkFrontend';
 import {setupLightboxForImages} from './blocks/components/Lightbox/setupLightboxForImages';
+import {setupParallax} from './blocks/components/Parallax/setupParallax';
 
 // Render React components
 const COMPONENTS = {
@@ -37,4 +38,5 @@ document.addEventListener('DOMContentLoaded', () => {
   );
 
   setupLightboxForImages();
+  setupParallax();
 });
