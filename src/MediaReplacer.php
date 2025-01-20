@@ -13,7 +13,6 @@ class MediaReplacer
 {
     /**
      * List of image MIME types.
-     * We need this list as for now we will only replace non-image files.
      */
     private const IMAGE_MIME_TYPES = [
         'image/jpeg',
@@ -30,6 +29,10 @@ class MediaReplacer
      */
     public function __construct()
     {
+        if (function_exists('is_plugin_active') && !is_plugin_active('wp-stateless/wp-stateless-media.php')) {
+            return;
+        }
+
         add_action('admin_enqueue_scripts', [$this, 'enqueue_media_modal_script']);
         add_filter('attachment_fields_to_edit', [$this, 'add_replace_media_button'], 10, 2);
         add_action('add_meta_boxes', [$this, 'add_replace_media_metabox']);
@@ -73,13 +76,6 @@ class MediaReplacer
      */
     public function render_replace_media_metabox(WP_Post $post): void
     {
-        // Check if the post excludes image mime types
-        if (in_array($post->post_mime_type, self::IMAGE_MIME_TYPES)) {
-            $message = __('Images cannot be replaced yet.', 'planet4-master-theme-backend');
-            echo "<p>" . $message . "</p>";
-            return;
-        }
-
         // phpcs:ignore Generic.Files.LineLength.MaxExceeded
         $message = __('Use this to replace the current file without changing the file URL.', 'planet4-master-theme-backend');
         echo "<p>" . $message . "</p>";
@@ -106,11 +102,6 @@ class MediaReplacer
             return $form_fields;
         }
 
-        // Check if the post excludes image mime types
-        if (in_array($post->post_mime_type, self::IMAGE_MIME_TYPES)) {
-            return $form_fields;
-        }
-
         $form_fields['replace_media_button'] = array(
             'input' => 'html',
             'html' => $this->get_replace_button_html($post),
@@ -128,19 +119,19 @@ class MediaReplacer
     private function get_replace_button_html(WP_Post $post): string
     {
         return
-        '<button 
-            type="button" 
-            class="button media-replacer-button" 
+        '<button
+            type="button"
+            class="button media-replacer-button"
             data-attachment-id="' . esc_attr($post->ID) . '"
             data-mime-type="' . esc_attr($post->post_mime_type) . '"
         >
             Replace Media
         </button>
-        <input 
-            type="file" 
-            class="replace-media-file" 
-            style="display: none;" 
-            accept="' . esc_attr($post->post_mime_type) . '" 
+        <input
+            type="file"
+            class="replace-media-file"
+            style="display: none;"
+            accept="' . esc_attr($post->post_mime_type) . '"
         />
         ';
     }
@@ -187,7 +178,6 @@ class MediaReplacer
                 return;
             }
 
-            // If the file was not moved, abort
             $file_replaced = $this->replace_media_file($attachment_id, $movefile['file']);
 
             // If the file was not replaced, abort
@@ -200,7 +190,6 @@ class MediaReplacer
 
             $message = __('Media replaced successfully!', 'planet4-master-theme-backend');
             set_transient('media_replacement_message', $message, 5);
-            $this->purge_cloudflare(wp_get_attachment_url($attachment_id));
             wp_send_json_success();
         } catch (\Exception $e) {
             set_transient('media_replacement_error', $e->getMessage(), 5);
@@ -259,12 +248,156 @@ class MediaReplacer
             $attach_data = wp_generate_attachment_metadata($old_file_id, $old_file_path);
             $post_meta_updated = wp_update_attachment_metadata($old_file_id, $attach_data);
 
-            // If the post meta was not updated, abort
+            // If the file is an image, replace the image variants in Google Storage.
+            if (in_array($filetype['type'], self::IMAGE_MIME_TYPES)) {
+                $this->replace_image_variants($old_file_id);
+            }
+
+            // Purge the Cloudflare cache for the replaced file url.
+            $this->purge_cloudflare(wp_get_attachment_url($old_file_id));
+
             return $post_meta_updated;
         } catch (\Exception $e) {
             set_transient('media_replacement_error', $e->getMessage(), 5);
             return false;
         }
+    }
+
+    /**
+     * Replaces the image variants (the set of images with different sizes) in Google Storage.
+     *
+     * @param string $original_image_id The ID of the original image.
+     */
+    private function replace_image_variants($original_image_id)
+    {
+        $temp_file = $this->save_original_image_in_temporal_file($original_image_id);
+
+        $this->resize_and_sync_images($original_image_id, $temp_file);
+
+        // Cleanup: Remove the temporary file after processing
+        if (file_exists($temp_file)) {
+            unlink($temp_file);
+        }
+    }
+
+    /**
+     * Downloads the original image from the URL and saves it to a temporary file.
+     *
+     * @param string $original_image_id The ID of the original image.
+     */
+    private function save_original_image_in_temporal_file($original_image_id)
+    {
+        $image_url = get_post($original_image_id)->guid;
+        if (!filter_var($image_url, FILTER_VALIDATE_URL)) {
+            return false;
+        }
+
+        // Get the uploads directory
+        $upload_dir = wp_upload_dir();
+        if (!is_writable($upload_dir['path'])) {
+            return false;
+        }
+
+        // Download the image from the external URL
+        $image_data = file_get_contents($image_url);
+        if ($image_data === false) {
+            return false;
+        }
+
+        // Generate a temporary file path in the uploads directory
+        $temp_file_path = $upload_dir['path'] . 'temporary-image.jpg';
+
+        // Save the downloaded image to the temporary file
+        $saved = file_put_contents($temp_file_path, $image_data);
+        if ($saved === false) {
+            return false;
+        }
+
+        return $temp_file_path;
+    }
+
+    /**
+     * Resizes the original image and syncs the resized images with Google Storage.
+     *
+     * @param string $original_image_id The ID of the original image.
+     * @param string $temp_file The path to the temporary file.
+     */
+    private function resize_and_sync_images($original_image_id, $temp_file)
+    {
+        $image_variants = get_post_meta($original_image_id, 'sm_cloud')[0]['sizes'];
+        $image_title = get_post($original_image_id)->post_title;
+
+        // Get the file's MIME type and extension
+        $file_info = wp_check_filetype($temp_file);
+        $mime_type = $file_info['type'];
+        $file_extension = $file_info['ext'];
+
+        foreach($image_variants as $size => $image) {
+            // Load the image editor for the specified file.
+            $editor = wp_get_image_editor( $temp_file );
+
+            if ( is_wp_error( $editor ) ) {
+                return false;
+            }
+
+            // Resize the image to the desired dimensions.
+            $result = $editor->resize( $image['width'], $image['height'], true );
+
+            if ( is_wp_error( $result ) ) {
+                return;
+            }
+
+            // Save the resized image.
+            $resized_file = $editor->save();
+
+            if ( is_wp_error( $resized_file ) ) {
+                return;
+            }
+
+            $this->sync_image_variant(
+                $image_title,
+                $image,
+                $resized_file,
+                $size,
+                $original_image_id,
+                $mime_type,
+                $file_extension
+            );
+        }
+    }
+
+    /**
+     * Syncs the resized image with Google Storage.
+     *
+     * @param string $image_title The title of the image.
+     * @param array $image The image variant metadata.
+     * @param array $resized_file The resized image file.
+     * @param string $size The size of the image.
+     * @param string $original_image_id The ID of the original image.
+     * @param string $mime_type The MIME type of the image.
+     */
+    private function sync_image_variant($image_title, $image, $resized_file, $size, $original_image_id, $mime_type, $file_extension)
+    {
+        // Remove the file extension using pathinfo().
+        $image_name = pathinfo($image_title, PATHINFO_DIRNAME) . '/' . pathinfo($image_title, PATHINFO_FILENAME);
+
+        $variant_image_args = array(
+            'name' => $image_name . '-' . $image['width'] . 'x' . $image['height'] . '.' . $file_extension,
+            'force' => true,
+            'absolutePath' => $resized_file['path'],
+            'cacheControl' => 'public, max-age=36000, must-revalidate',
+            'contentDisposition' => null,
+            'mimeType' => $mime_type,
+            'metadata' => [
+                'width' => $image['width'],
+                'height' => $image['height'],
+                'file-hash' => md5($image['name']),
+                'size' => $size,
+                'child-of' => $original_image_id,
+            ],
+        );
+
+        ud_get_stateless_media()->get_client()->add_media($variant_image_args);
     }
 
     /**
