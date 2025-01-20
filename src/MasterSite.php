@@ -327,6 +327,21 @@ class MasterSite extends TimberSite
             10
         );
 
+        // Add VWO Anti Flicker script
+        add_action(
+            'wp_head',
+            function (): void {
+                $enable_vwo = planet4_get_option('enable_vwo') === 'on';
+
+                if (!$enable_vwo) {
+                    return;
+                }
+
+                echo '<script>vwo_$("body").vwoCss({"visibility":"visible !important"});</script>' . PHP_EOL;
+            },
+            10
+        );
+
         AuthorPage::hooks();
         Search\Search::hooks();
         Sendgrid::hooks();
