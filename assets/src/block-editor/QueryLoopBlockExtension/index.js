@@ -108,6 +108,20 @@ export const setupQueryLoopBlockExtension = () => {
           wp.data.select('core/block-editor').getSelectedBlock(),
         ]);
 
+        useEffect(() => {
+          const IS_NEW_IA = window.p4_vars.options.new_ia;
+          const queryPostType = IS_NEW_IA ? 'p4_action' : 'page';
+
+          if(query.postType !== queryPostType) {
+            setAttributes({
+              query: {
+                ...query,
+                postType: IS_NEW_IA ? 'p4_action' : 'page',
+              }
+            });
+          }
+        }, [query])
+
         return useMemo(() => (
           <>
             <InspectorControls>
