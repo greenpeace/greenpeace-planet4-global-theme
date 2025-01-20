@@ -135,6 +135,13 @@ class MasterBlocks
 
         $reflection_vars = self::reflect_js_variables();
         wp_localize_script('planet4-blocks-theme-editor-script', 'p4_vars', $reflection_vars);
+
+        // Sets translated strings for a JS script.
+        wp_set_script_translations(
+            'planet4-blocks-theme-editor-script',
+            'planet4-blocks-backend',
+            get_template_directory() . '/blocks/languages'
+        );
     }
 
     /**
@@ -162,6 +169,13 @@ class MasterBlocks
 
         $reflection_vars = self::reflect_js_variables();
         wp_localize_script('planet4-blocks-theme-script', 'p4_vars', $reflection_vars);
+
+        // Sets translated strings for a JS script.
+        wp_set_script_translations(
+            'planet4-blocks-theme-script',
+            'planet4-blocks',
+            get_template_directory() . '/blocks/languages'
+        );
     }
 
     /**
