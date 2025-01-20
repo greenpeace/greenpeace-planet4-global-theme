@@ -1,4 +1,4 @@
-import {test, expect} from '../tools/lib/test-utils.js';
+import {test, expect} from './tools/lib/test-utils.js';
 
 test.useAdminLoggedIn();
 

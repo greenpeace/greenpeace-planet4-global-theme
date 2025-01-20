@@ -1,56 +1,30 @@
 import {searchAndInsertBlock} from './editor.js';
 import {expect} from './test-utils.js';
 
-const TAG_NAMES = ['Climate', 'Oceans', 'renewables', 'Consumption'];
 const PAGE_NAMES = ['Vestibulum leo libero', 'Consectetur adipiscing elit', 'Vestibulum placerat'];
 
-async function addCoversBlock(page, editor, style = '') {
+async function addCoversBlock(page) {
   // Add Covers block.
   await searchAndInsertBlock({page}, 'Covers');
-
-  // Select the style if needed.
-  if (style) {
-    const stylePicker = await page.locator('.block-editor-block-styles__variants');
-    //CSS selector needs single word,hence remove word after space(eg Take Action=>Take).
-    const label = style.split(' ')[0];
-    await stylePicker.getByRole('button', {name: label}).click();
-  }
 
   const settings = await page.getByRole('region', {name: 'Editor settings'});
   const suggestions = settings
     .getByRole('listbox')
     .and(settings.locator('[id*="suggestions"]'));
 
-  if (style === 'Take Action') {
-    // Fill in the Posts.
-    const postsInput = await settings.getByLabel('Select pages');
-    await postsInput.scrollIntoViewIfNeeded();
+  // Fill in the Posts.
+  const postsInput = await settings.getByLabel('Select pages');
+  await postsInput.scrollIntoViewIfNeeded();
 
-    await postsInput.type(PAGE_NAMES[0]);
-    await suggestions.getByRole('option').first().click();
+  await postsInput.fill(PAGE_NAMES[0]);
+  await suggestions.getByRole('option').first().click();
 
-    await postsInput.type(PAGE_NAMES[1]);
-    await suggestions.getByRole('option').first().click();
+  await postsInput.fill(PAGE_NAMES[1]);
+  await suggestions.getByRole('option').first().click();
 
-    await postsInput.type(PAGE_NAMES[2]);
-    await suggestions.getByRole('option').first().click();
-  } else {
-    // Fill in the tags.
-    const tagsInput = await settings.getByLabel('Select Tags');
-    await tagsInput.scrollIntoViewIfNeeded();
+  await postsInput.fill(PAGE_NAMES[2]);
+  await suggestions.getByRole('option').first().click();
 
-    await tagsInput.type(TAG_NAMES[0]);
-    await suggestions.getByRole('option').first().click();
-
-    await tagsInput.type(TAG_NAMES[1]);
-    await suggestions.getByRole('option').first().click();
-
-    await tagsInput.type(TAG_NAMES[2]);
-    await suggestions.getByRole('option').first().click();
-
-    await tagsInput.type(TAG_NAMES[3]);
-    await suggestions.getByRole('option').first().click();
-  }
   await page.getByLabel('Button Text').fill('Read more');
 }
 

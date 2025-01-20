@@ -17,17 +17,14 @@ const slides = [
  * @param {{Page, Editor}} options - Page and Editor object
  */
 const addSlide = async (slide, {index, addNext}, {page, editor}) => {
-  const title = page.getByRole('textbox', {name: 'Enter title'}).nth(index);
-  await title.click();
-  await title.fill(`My test Header ${index + 1}`);
+  await page.getByRole('textbox', {name: 'Enter title'}).nth(index)
+    .fill(`My test Header ${index + 1}`);
 
-  const description = page.getByRole('textbox', {name: 'Enter description'}).nth(index);
-  await description.click();
-  await description.fill(`Testing carousel description ${index + 1}`);
+  await page.getByRole('textbox', {name: 'Enter description'}).nth(index)
+    .fill(`Testing carousel description ${index + 1}`);
 
-  const ctaBtn = page.getByRole('textbox', {name: 'Enter CTA text'}).nth(index);
-  await ctaBtn.click();
-  await ctaBtn.fill(`Read more ${index + 1}`);
+  await page.getByRole('textbox', {name: 'Enter CTA text'}).nth(index)
+    .fill(`Read more ${index + 1}`);
 
   // Check if sidebar is not visible
   await editor.openDocumentSettingsSidebar();

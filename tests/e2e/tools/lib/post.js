@@ -6,6 +6,7 @@ import {expect} from './test-utils';
  * @param {Object} params        - Parameters for publishing the post.
  * @param {Object} params.page   - The page object for interacting with the browser.
  * @param {Object} params.editor - The editor object used to publish the post.
+ *
  * @return {Promise<string>} The URL of the published post.
  */
 async function publishPost({page, editor}) {
@@ -29,6 +30,7 @@ async function publishPost({page, editor}) {
  *
  * @param {Object} params      - Parameters for updating the post.
  * @param {Object} params.page - The page object representing the browser page.
+ *
  * @return {Promise<void>} - A promise that resolves when the snackbar confirming the update is visible.
  */
 async function updatePost({page}) {
@@ -72,9 +74,8 @@ async function createPostWithFeaturedImage({page, admin, editor}, params) {
   await page.locator('button#menu-item-browse').click();
 
   const mediaSearchInput = await page.locator('#media-search-input');
-  await mediaSearchInput.click();
   await mediaSearchInput.fill('OCEANS-GP0STOM6C');
-  await mediaSearchInput.press('Enter');
+  await page.keyboard.press('Enter');
 
   const thumbnail = await page.locator('li[aria-label="OCEANS-GP0STOM6C"]').nth(0);
   await page.waitForSelector('li[aria-label="OCEANS-GP0STOM6C"]');

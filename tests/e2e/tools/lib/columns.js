@@ -3,7 +3,7 @@ import {expect} from './test-utils.js';
 
 const TEST_LINKS = ['/act', '/explore', '/'];
 
-async function addColumnsBlock(page, editor, style) {
+async function addColumnsBlock(page, style) {
   // Add Columns block.
   await searchAndInsertBlock({page}, 'Planet 4 Columns', 'planet4-blocks-columns');
 

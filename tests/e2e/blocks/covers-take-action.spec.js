@@ -8,7 +8,7 @@ test('Test Covers block with Take Action covers style', async ({page, admin, edi
   await createPostWithFeaturedImage({page, admin, editor}, {title: 'Test Covers block', postType: 'page'});
 
   // Add Covers block.
-  await addCoversBlock(page, editor, 'Take Action');
+  await addCoversBlock(page);
 
   // Publish page.
   await publishPostAndVisit({page, editor});

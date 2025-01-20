@@ -7,9 +7,9 @@ test('check admin PHP errors', async ({page}) => {
   await page.goto('/wp-admin/');
 
   await page.locator('#user_login').focus();
-  await page.type('#user_login', 'admin');
+  await page.fill('#user_login', 'admin');
   await page.locator('#user_pass').focus();
-  await page.type('#user_pass', 'admin');
+  await page.fill('#user_pass', 'admin');
   await page.getByText('Log In').click();
 
   await expect(page.locator('#wpadminbar')).toBeVisible();
@@ -36,9 +36,9 @@ test('check rest PHP errors', async ({page, request}) => {
   await page.goto('/wp-admin/');
 
   await page.locator('#user_login').focus();
-  await page.type('#user_login', 'admin');
+  await page.fill('#user_login', 'admin');
   await page.locator('#user_pass').focus();
-  await page.type('#user_pass', 'admin');
+  await page.fill('#user_pass', 'admin');
   await page.getByText('Log In').click();
 
   await expect(page.locator('#wpadminbar')).toBeVisible();

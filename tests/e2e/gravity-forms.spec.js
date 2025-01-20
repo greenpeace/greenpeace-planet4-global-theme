@@ -108,7 +108,8 @@ test.describe('Gravity Forms tests', () => {
     const spinner = confirmationSettings.locator('.gform-dropdown__spinner');
     await confirmationSettings.getByRole('button', {name: 'Select a Page'}).click();
     await expect(pagesList).toBeVisible();
-    await confirmationSettings.getByPlaceholder('Search all Pages').type('Home');
+    await confirmationSettings.getByPlaceholder('Search all Pages').click();
+    await page.keyboard.type('Home');
     await expect(spinner).toBeVisible();
     await expect(spinner).toBeHidden();
     await pagesList.getByRole('button', {name: 'Home'}).click();
