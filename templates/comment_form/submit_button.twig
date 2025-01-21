@@ -1,23 +1,9 @@
+{% do action('enqueue_toggle_comment_submit_script') %}
 {% if gdpr_checkbox %}
 <div id="gdpr-comments-compliance" class="form-group comments-gdpr">
     <input id="gdpr-comments-checkbox" type="checkbox" name="gdpr_comments_checkbox" value="1" required="required">
     <label id="gdpr-comments-label" for="gdpr-comments-checkbox">{{ gdpr_label }}</label>
 </div>
-<script>
-function toggleCommentSubmit() {
-    const checkbox = document.getElementById('gdpr-comments-checkbox');
-    const submit = document.querySelector('#commentform button[type="submit"]');
-    checkbox.checked
-        ? submit.removeAttribute('disabled')
-        : submit.setAttribute('disabled', '');
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('gdpr-comments-checkbox')
-        .addEventListener('change', () => toggleCommentSubmit());
-    toggleCommentSubmit();
-});
-</script>
 {% endif %}
 
 <button type="submit" class="btn btn-small btn-primary">{{ __( 'Post comment', 'planet4-master-theme' ) }}</button>

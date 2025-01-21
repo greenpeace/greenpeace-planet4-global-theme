@@ -9,7 +9,7 @@
     {% include 'blocks/meta_fields.twig' %}
 
     {% if hubspot_active %}
-        {% include 'head/hubspot.twig' %}
+        {% do action('enqueue_hubspot_cookie_script') %}
     {% endif %}
 
     {% include 'blocks/p4_structured_data.twig' %}
