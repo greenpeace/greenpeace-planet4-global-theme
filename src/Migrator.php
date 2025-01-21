@@ -39,6 +39,7 @@ use P4\MasterTheme\Migrations\M034PrePopulateOldPostsArchiveNotice;
 use P4\MasterTheme\Migrations\M035MigrateCampaignCoversToP4ColumnsBlock;
 use P4\MasterTheme\Migrations\M036RemoveEnFormOptions;
 use P4\MasterTheme\Migrations\M037MigrateCoversContentBlockToPostsListBlock;
+use P4\MasterTheme\Migrations\M038RemoveCustomSiteIcon;
 
 /**
  * Run any new migration scripts and record results in the log.
@@ -95,6 +96,7 @@ class Migrator
             M035MigrateCampaignCoversToP4ColumnsBlock::class,
             M036RemoveEnFormOptions::class,
             M037MigrateCoversContentBlockToPostsListBlock::class,
+            M038RemoveCustomSiteIcon::class,
         ];
 
         // Loop migrations and run those that haven't run yet.

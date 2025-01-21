@@ -249,6 +249,9 @@ class MasterSite extends TimberSite
         add_action(
             'customize_register',
             function ($wp_customize): void {
+                // Remove site icon customization.
+                $wp_customize->remove_control('site_icon');
+
                 if (!defined('WP_APP_ENV') || ( 'production' !== WP_APP_ENV && 'staging' !== WP_APP_ENV )) {
                     return;
                 }
