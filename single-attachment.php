@@ -24,4 +24,5 @@ $post = Timber::query_post(false, Post::class); // phpcs:ignore WordPress.WP.Glo
 $context['post'] = $post;
 $context['social_accounts'] = Post::filter_social_accounts($context['footer_social_menu'] ?: []);
 
+do_action('enqueue_google_tag_manager_script', $context);
 Timber::render([ 'single-' . $post->ID . '.twig', 'single-' . $post->post_type . '.twig', 'single.twig' ], $context);

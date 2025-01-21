@@ -50,7 +50,9 @@ if (post_password_required($post->ID)) {
 
     $context['login_url'] = wp_login_url();
 
+    do_action('enqueue_google_tag_manager_script', $context);
     Timber::render('single-page.twig', $context);
 } else {
+    do_action('enqueue_google_tag_manager_script', $context);
     Timber::render([ 'page-' . $post->post_name . '.twig', 'page.twig' ], $context);
 }

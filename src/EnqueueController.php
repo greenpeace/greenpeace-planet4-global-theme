@@ -16,6 +16,7 @@ class EnqueueController
     {
         add_action('enqueue_toggle_comment_submit_script', [$this, 'enqueue_toggle_comment_submit']);
         add_action('enqueue_hubspot_cookie_script', [$this, 'enqueue_hubspot_cookie']);
+        add_action('enqueue_google_tag_manager_script', [$this, 'enqueue_google_tag_manager']);
     }
 
     /**
@@ -52,6 +53,53 @@ class EnqueueController
             $this->get_file_version('/assets/build/hubspotCookie.js'),
             true
         );
+    }
+
+    /**
+     * Enqueues the Google Tag Manager script and passes the context data to it.
+     *
+     */
+    public function enqueue_google_tag_manager(array $context): void
+    {
+        $this->enqueue_script(
+            'google-tag-manager-script',
+            '/assets/build/googleTagManager.js',
+            [],
+            $this->get_file_version('/assets/build/googleTagManager.js'),
+            true
+        );
+
+        if (!wp_script_is('google-tag-manager-script', 'enqueued')) {
+            return;
+        }
+
+        $gtm_data = [
+            'google_tag_value' => $context['google_tag_value'] ?? null,
+            'google_tag_domain' => $context['google_tag_domain'] ?? null,
+            'consent_default_analytics_storage' => $context['consent_default_analytics_storage'] ?? null,
+            'consent_default_ad_storage' => $context['consent_default_ad_storage'] ?? null,
+            'consent_default_ad_user_data' => $context['consent_default_ad_user_data'] ?? null,
+            'consent_default_ad_personalization' => $context['consent_default_ad_personalization'] ?? null,
+            'page_category' => $context['page_category'] ?? null,
+            'p4_signedin_status' => $context['p4_signedin_status'] ?? null,
+            'p4_visitor_type' => $context['p4_visitor_type'] ?? null,
+            'post_tags' => $context['post_tags'] ?? null,
+            'p4_blocks' => $context['p4_blocks'] ?? null,
+            'post_categories' => $context['post_categories'] ?? null,
+            'reading_time' => $context['reading_time'] ?? null,
+            'page_date' => $context['page_date'] ?? null,
+            'cf_campaign_name' => $context['cf_campaign_name'] ?? null,
+            'cf_project_id' => $context['cf_project_id'] ?? null,
+            'cf_local_project_id' => $context['cf_local_project_id'] ?? null,
+            'cf_basket_name' => $context['cf_basket_name'] ?? null,
+            'cf_scope' => $context['cf_scope'] ?? null,
+            'cf_department' => $context['cf_department'] ?? null,
+            'enforce_cookies_policy' => $context['enforce_cookies_policy'] ?? null,
+            'cookies_enable_google_consent_mode' => $context['cookies']->enable_google_consent_mode ?? null,
+            'post_password_required' => $context['post']->password_required ?? null,
+        ];
+
+        wp_localize_script('google-tag-manager-script', 'googleTagManagerData', $gtm_data);
     }
 
     /**

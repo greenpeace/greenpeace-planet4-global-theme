@@ -10,6 +10,8 @@
  * @since    Timber 0.1
  */
 
+use Timber\Timber;
+
 $context = Timber::get_context();
 
 $options = get_option('planet4_options');
@@ -21,4 +23,5 @@ $context['page_notfound_help'] = __('Enter your search term below', 'planet4-mas
 $context['page_category'] = __('404 Page', 'planet4-master-theme');
 $context['custom_body_classes'] = 'brown-bg page-404-page';
 
+do_action('enqueue_google_tag_manager_script', $context);
 Timber::render('404.twig', $context);

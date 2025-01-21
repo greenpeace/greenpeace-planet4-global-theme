@@ -45,5 +45,6 @@ if (is_home()) {
 
     $page = new ListingPage($templates, $context);
 } else {
+    do_action('enqueue_google_tag_manager_script', $context);
     Timber::render($templates, $context);
 }
