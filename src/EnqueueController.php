@@ -23,6 +23,7 @@ class EnqueueController
         add_action('enqueue_filter_block_names_script', [$this, 'enqueue_filter_block_names']);
         add_action('enqueue_metabox_search_script', [$this, 'enqueue_metabox_search']);
         add_action('enqueue_dismiss_dashboard_notice_script', [$this, 'enqueue_dismiss_dashboard_notice']);
+        add_action('enqueue_hide_share_buttons_script', [$this, 'enqueue_hide_share_buttons']);
     }
 
     /**
@@ -72,6 +73,21 @@ class EnqueueController
             '/assets/build/hubspotCookie.js',
             [],
             $this->get_file_version('/assets/build/hubspotCookie.js'),
+            true
+        );
+    }
+
+    /**
+     * Enqueues the script to hide the share buttons.
+     *
+     */
+    public function enqueue_hide_share_buttons(): void
+    {
+        $this->enqueue_script(
+            'hide-share-buttons-script',
+            '/assets/build/hideShareButtons.js',
+            [],
+            $this->get_file_version('/assets/build/hideShareButtons.js'),
             true
         );
     }

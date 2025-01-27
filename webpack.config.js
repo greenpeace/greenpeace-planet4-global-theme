@@ -38,6 +38,7 @@ module.exports = (env, argv) => {
       toggleCommentSubmit: './assets/src/js/toggle_comment_submit.js',
       hubspotCookie: './assets/src/js/hubspot_cookie.js',
       shareButtons: './assets/src/js/share_buttons.js',
+      hideShareButtons: './assets/src/js/hide_share_buttons.js',
       googleTagManager: './assets/src/js/google_tag_manager.js',
       bulkExport: './assets/src/js/bulk_export.js',
       mediaImportButton: './assets/src/js/media_import_button.js',
