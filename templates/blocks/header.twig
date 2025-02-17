@@ -52,10 +52,7 @@
                 <h1 class="page-header-title">{{ header_title|e('wp_kses_post')|raw }}</h1>
             {% endif %}
             {% if not hide_page_title and ( post.is_take_action_page ) %}
-                {% include "blocks/share_buttons.twig" with {
-                    social: post.share_meta,
-                    share_platforms: post.social_share_platforms,
-                } %}
+                {% include "blocks/share_buttons.twig" with {social:post.share_meta} %}
             {% endif %}
             {% if ( header_subtitle ) %}
                 <h3 class="page-header-subtitle">{{ header_subtitle }}</h3>

@@ -1,8 +1,9 @@
 {% do action('enqueue_share_buttons_script', social) %}
 {% set socialLink = (share_url ?? social.link) ~ '?utm_medium=' ~ utm_medium ~ utm_content_param ~ utm_campaign_param %}
+{% set all_platforms = share_platforms is not defined %}
 <div class="share-buttons">
     <!-- Whatsapp -->
-    {% if share_platforms.whatsapp %}
+    {% if all_platforms or share_platforms.whatsapp %}
         <a href="https://wa.me/?text={% if share_text or social.description %}{{ (share_text ?? social.description)|striptags|url_encode }} {% endif %}{{ (socialLink ~ '&utm_source=whatsapp')|url_encode }}"
             onclick="window.dataLayerPush('Whatsapp');"
             target="_blank" class="share-btn whatsapp">
@@ -11,7 +12,7 @@
         </a>
     {% endif %}
     <!-- Facebook -->
-    {% if share_platforms.facebook %}
+    {% if all_platforms or share_platforms.facebook %}
         <a href="https://www.facebook.com/sharer/sharer.php?u={{ (socialLink ~ '&utm_source=facebook')|url_encode }}"
             onclick="window.dataLayerPush('Facebook');"
             target="_blank" class="share-btn facebook">
@@ -20,7 +21,7 @@
         </a>
     {% endif %}
     <!-- Twitter -->
-    {% if share_platforms.twitter %}
+    {% if all_platforms or share_platforms.twitter %}
         <a href="https://x.com/intent/post?related={{ social_accounts.twitter }}&text={{ social.title|url_encode }}{% if share_text or social.description %} - {{ (share_text ?? social.description)|striptags|url_encode }}{% endif %}, via @{{ social_accounts.twitter }}&url={{ (socialLink ~ '&utm_source=twitter')|url_encode }}"
             onclick="window.dataLayerPush('Twitter');"
             target="_blank" class="share-btn twitter">
@@ -29,7 +30,7 @@
         </a>
     {% endif %}
     <!-- Email -->
-    {% if share_platforms.email %}
+    {% if all_platforms or share_platforms.email %}
         <a href="mailto:?subject={{ social.title|url_encode }}&body={% if share_text or social.description %}{{ (share_text ?? social.description)|striptags|url_encode }} {% endif %}{{ (socialLink ~ '&utm_source=email')|url_encode }}"
             onclick="window.dataLayerPush('Email');"
             target="_blank" class="share-btn email">
@@ -38,7 +39,7 @@
         </a>
     {% endif %}
     <!-- Native (Gravity Forms only, for devices that support it) -->
-    {% if share_platforms.native %}
+    {% if not all_platforms and share_platforms.native %}
         <a
             onclick="window.nativeShare();"
             target="_blank"

@@ -40,7 +40,6 @@ use P4\MasterTheme\Migrations\M035MigrateCampaignCoversToP4ColumnsBlock;
 use P4\MasterTheme\Migrations\M036RemoveEnFormOptions;
 use P4\MasterTheme\Migrations\M037MigrateCoversContentBlockToPostsListBlock;
 use P4\MasterTheme\Migrations\M038RemoveCustomSiteIcon;
-use P4\MasterTheme\Migrations\M039EnableNewSocialSharePlatforms;
 use P4\MasterTheme\Migrations\M040ReplaceSpecialCharactersInPostsContent;
 
 /**
@@ -99,7 +98,6 @@ class Migrator
             M036RemoveEnFormOptions::class,
             M037MigrateCoversContentBlockToPostsListBlock::class,
             M038RemoveCustomSiteIcon::class,
-            M039EnableNewSocialSharePlatforms::class,
             M040ReplaceSpecialCharactersInPostsContent::class,
         ];
 

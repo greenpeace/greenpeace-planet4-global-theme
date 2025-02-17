@@ -78,11 +78,7 @@
                         {% endif %}
                     </div>
                 </div>
-                {% include "blocks/share_buttons.twig" with {
-                    social: post.share_meta,
-                    utm_medium: 'share',
-                    share_platforms: post.social_share_platforms,
-                } %}
+                {% include "blocks/share_buttons.twig" with {social:post.share_meta, utm_medium: 'share'} %}
 
                 {% if old_posts_archive_notice.show_notice %}
                     <div class="single-post-old-posts-archive-notice">

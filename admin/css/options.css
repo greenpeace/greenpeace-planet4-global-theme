@@ -20,14 +20,6 @@
   display: none;
 }
 
-.social-share-checkbox {
-  margin-inline-end: 16px;
-}
-
-.social-share-checkbox input {
-  vertical-align: text-bottom;
-}
-
 @media (min-width: 768px) {
   .planet4_options .cmb-row:not(.hidden) {
     display: grid;

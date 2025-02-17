@@ -48,20 +48,11 @@ class Settings
     protected array $subpages = [];
 
     /**
-     * Social share options
-     */
-    public const SOCIAL_SHARE_OPTIONS = [
-        'facebook' => 'Facebook',
-        'whatsapp' => 'WhatsApp',
-        'twitter' => 'X',
-        'email' => 'Email',
-    ];
-
-    /**
      * Constructor
      */
     public function __construct()
     {
+
         // Set our title.
         $this->title = __('Planet 4', 'planet4-master-theme-backend');
 
@@ -406,12 +397,6 @@ class Settings
                             'type' => 'text',
                         ],
                     ],
-                    [
-                        'name' => __('Choose social sharing options', 'planet4-master-theme-backend'),
-                        'id' => 'social_share_options',
-                        'type' => 'social_share_checkboxes',
-                        'default' => [],
-                    ],
                 ],
             ],
             'planet4_settings_404_page' => [
@@ -592,7 +577,6 @@ class Settings
         add_filter('cmb2_render_get_informed_page_dropdown', [$this, 'p4_render_page_dropdown'], 10, 2);
         add_filter('cmb2_render_take_action_page_dropdown', [$this, 'p4_render_page_dropdown'], 10, 2);
         add_filter('cmb2_render_about_us_page_dropdown', [$this, 'p4_render_page_dropdown'], 10, 2);
-        add_filter('cmb2_render_social_share_checkboxes', [$this, 'p4_render_social_share_checkboxes'], 10, 2);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
 
         // Make settings multilingual if wpml plugin is installed and activated.
@@ -697,32 +681,6 @@ class Settings
         );
     }
     // phpcs:enable SlevomatCodingStandard.Functions.UnusedParameter
-
-    /**
-     * Render social share checkboxes.
-     *
-     * @param CMB2_Field $field_args Field arguments.
-     * @param array $value Value.
-     */
-    public function p4_render_social_share_checkboxes(CMB2_Field $field_args, array $value): void
-    {
-        echo '<fieldset>';
-        foreach (self::SOCIAL_SHARE_OPTIONS as $key => $label) {
-            $selected = in_array($key, $value);
-
-            printf(
-                '<label class="social-share-checkbox">
-                    <input type="checkbox" id="%1$s" name="%2$s" value="%3$s" %4$s />%5$s
-                </label>',
-                $field_args->id(),
-                $field_args->id() . '[' . $key . ']',
-                $key,
-                $selected ? 'checked' : '',
-                $label,
-            );
-        }
-        echo '</fieldset>';
-    }
 
     /**
      * Admin page markup. Mostly handled by CMB2.
