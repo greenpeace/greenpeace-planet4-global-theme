@@ -13,6 +13,7 @@ class MediaReplacer
 {
     private array $replacement_status;
     private array $user_messages;
+    private CloudflarePurger $cf;
 
     private const IMAGE_MIME_TYPES = [
         IMAGETYPE_JPEG => [
@@ -53,6 +54,8 @@ class MediaReplacer
         if (function_exists('ud_get_stateless_media') && ud_get_stateless_media('sm.mode') === 'disabled') {
             return;
         }
+
+        $this->cf = new CloudflarePurger();
 
         $this->replacement_status = [
             'success' => [],
@@ -498,7 +501,8 @@ class MediaReplacer
             $status = ud_get_stateless_media()->get_client()->add_media($image_args);
 
             if ($status) {
-                $this->success_handler($this->user_messages['success'], $name);
+                $stateless_url = "https://www.greenpeace.org/static/" . $status['bucket'] . "/" . $status['name'];
+                $this->success_handler($this->user_messages['success'], $stateless_url);
                 return true;
             }
             throw new \LogicException($this->user_messages['error']);
@@ -529,8 +533,19 @@ class MediaReplacer
      *
      * @param string $message The success message.
      */
-    private function success_handler(string $message): void
+    private function success_handler(string $message, string $stateless_url): void
     {
+        $this->cf->purge([$stateless_url]);
+
+        // foreach ($aa as [$response, $purgedUrls]) {
+        //     error_log ("Purged URLs:");
+        //     error_log(print_r($purgedUrls, true));
+        //     // print_r($purgedUrls);
+        //     // echo "Response:\n";
+        //     error_log('aaaa $response');
+        //     error_log(print_r($response, true));
+        // }
+
         array_push($this->replacement_status['success'], $message);
         $this->transient_handler(self::TRANSIENT['file'], $this->replacement_status);
     }
