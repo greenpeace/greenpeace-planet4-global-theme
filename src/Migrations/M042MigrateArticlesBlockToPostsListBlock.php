@@ -221,14 +221,14 @@ class M042MigrateArticlesBlockToPostsListBlock extends MigrationScript
                                     [
                                         Utils\Functions::create_new_block(
                                             Utils\Constants::BLOCK_TERMS,
-                                            ['term' => 'post_tag', 'separator' => ' ']
+                                            ['term' => 'category', 'separator' => ' | ']
                                         ),
                                         Utils\Functions::create_new_block(
                                             Utils\Constants::BLOCK_TERMS,
-                                            ['term' => 'category', 'separator' => ' | ']
+                                            ['term' => 'post_tag', 'separator' => ' ']
                                         ),
                                     ],
-                                    ['className' => 'posts-list-meta']
+                                    []
                                 ),
                                 Utils\Functions::create_new_block(
                                     Utils\Constants::BLOCK_TITLE
