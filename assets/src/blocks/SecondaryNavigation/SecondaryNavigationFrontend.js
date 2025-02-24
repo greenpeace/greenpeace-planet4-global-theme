@@ -1,12 +1,37 @@
+import {useState, useEffect} from '@wordpress/element';
 import {getHeadingsFromDom} from '../TableOfContents/getHeadingsFromDom';
+import {initializeJustifyContentAdjustment} from './adjustNavWidth';
+
+const makeSecondaryNavigationStickyonScroll = () => {
+  const pageHeader = document.querySelector('.is-pattern-p4-page-header');
+
+  if (!pageHeader) {return;}
+
+  const stickyElement = document.querySelector('.secondary-navigation-block');
+  const container = document.querySelector('.page-content');
+  const offset = 20;
+
+  window.addEventListener('scroll', () => {
+    const containerRect = container.getBoundingClientRect();
+    const stickyRect = stickyElement.getBoundingClientRect();
+    const pageHeaderRect = pageHeader.getBoundingClientRect();
+
+    if (pageHeaderRect.bottom <= offset && containerRect.bottom > stickyRect.height + offset) {
+      stickyElement.classList.add('stuck');
+    } else {
+      stickyElement.classList.remove('stuck');
+    }
+  });
+};
 
 export const SecondaryNavigationFrontend = ({levels}) => {
+  const [activeLink, setActiveLink] = useState('');
   const headings = getHeadingsFromDom(levels);
-  const setActive = event => {
-    const allLinks = document.querySelectorAll('.secondary-navigation-link');
-    allLinks.forEach(link => link.classList.remove('active'));
-    event.target.classList.add('active');
-  };
+
+  useEffect(() => {
+    makeSecondaryNavigationStickyonScroll();
+    initializeJustifyContentAdjustment();
+  }, [headings]);
 
   return (
     <section className="block secondary-navigation-block">
@@ -17,9 +42,9 @@ export const SecondaryNavigationFrontend = ({levels}) => {
               key={anchor}
             >
               <a
-                className="secondary-navigation-link"
+                className={`secondary-navigation-link ${activeLink === anchor ? 'active': ''}`}
                 href={`#${anchor}`}
-                onClick={setActive}
+                onClick={() => setActiveLink(anchor)}
               >
                 {content}
               </a>

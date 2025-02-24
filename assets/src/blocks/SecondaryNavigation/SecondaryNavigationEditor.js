@@ -1,6 +1,8 @@
 import {getHeadingsFromBlocks} from '../TableOfContents/getHeadingsFromBlocks';
+import {initializeJustifyContentAdjustment} from './adjustNavWidth';
 
 const {useSelect} = wp.data;
+const {useEffect} = wp.element;
 const {InspectorControls} = wp.blockEditor;
 const {PanelBody} = wp.components;
 const {__} = wp.i18n;
@@ -28,6 +30,10 @@ const renderView = attributes => {
   } = attributes;
 
   const blocks = useSelect(select => select('core/block-editor').getBlocks(), []);
+
+  useEffect(() => {
+    initializeJustifyContentAdjustment();
+  }, []);
 
   const flatHeadings = getHeadingsFromBlocks(blocks, levels);
 

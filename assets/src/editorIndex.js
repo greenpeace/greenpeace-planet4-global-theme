@@ -30,7 +30,6 @@ wp.domReady(() => {
   registerTimelineBlock();
   registerPostsListBlock();
   registerTopicLinkBlock();
-  registerSecondaryNavigationBlock();
 
   // Block Templates
   registerBlockTemplates();
@@ -39,6 +38,7 @@ wp.domReady(() => {
   if (window.p4_vars.features.beta_blocks === 'on') {
     registerActionButtonTextBlock();
     registerActionsListBlock();
+    registerSecondaryNavigationBlock();
   }
 
   // Custom block styles

@@ -13,6 +13,10 @@
       max-width: 100%;
     }
   }
+
+  .EmptyMessage {
+    text-align: center;
+  }
 }
 
 .page-content > p,
@@ -29,16 +33,11 @@
 .secondary-navigation-item {
   list-style: none;
   display: flex;
-  justify-content: center;
   overflow-x: auto;
   flex-wrap: nowrap;
   scroll-padding-inline-start: 24px;
   gap: 48px;
   scrollbar-width: none;
-
-  @include small-and-less {
-    justify-content: flex-start;
-  }
 
   li {
     padding: 5px;
