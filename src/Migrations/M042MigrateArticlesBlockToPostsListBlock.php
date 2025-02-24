@@ -73,8 +73,9 @@ class M042MigrateArticlesBlockToPostsListBlock extends MigrationScript
         $layout_type = 'default';
         $classname = 'list';
         $rows = $existing_block_attrs['rows'];
+        $current_post_id = $existing_block_attrs['current_post_id'];
 
-        $attrs = self::set_query_block_attrs($tags, $posts_override, $post_types, $layout_type, $rows);
+        $attrs = self::set_query_block_attrs($tags, $posts_override, $post_types, $layout_type, $rows, $current_post_id);
 
         $inner_blocks = [
             self::get_head_group_block($existing_block_attrs['title']),
@@ -110,6 +111,7 @@ class M042MigrateArticlesBlockToPostsListBlock extends MigrationScript
             'posts' => isset($attrs['posts']) ? $attrs['posts'] : [],
             'post_types' => isset($attrs['post_types']) ? $attrs['post_types'] : [],
             'rows' => isset($attrs['article_count']) ? $attrs['article_count'] : 3,
+            'current_post_id' => isset($attrs['current_post_id']) ? $attrs['current_post_id'] : 0,
         ];
     }
 
@@ -121,6 +123,7 @@ class M042MigrateArticlesBlockToPostsListBlock extends MigrationScript
      * @param array $post_types - The list of terms of the "p4-page-type" taxonomy.
      * @param string $layout_type - The layout type (grid or flex).
      * @param int $per_page - The number of elements per page.
+     * @param int $current_post_id - The current post ID.
      * @return array - The attributes.
      */
     private static function set_query_block_attrs(
@@ -129,6 +132,7 @@ class M042MigrateArticlesBlockToPostsListBlock extends MigrationScript
         array $post_types,
         string $layout_type,
         int $per_page,
+        int $current_post_id
     ): array {
         $query = [];
         $query['pages'] = 0;
@@ -154,9 +158,13 @@ class M042MigrateArticlesBlockToPostsListBlock extends MigrationScript
             $query['taxQuery']['p4-page-type'] = $post_types;
         }
 
+        if ($current_post_id) {
+            $query['exclude'] = [$current_post_id];
+        }
+
         $layout = [];
         $layout['type'] = $layout_type;
-        $layout['columnCount'] = 4;
+        $layout['columnCount'] = 3;
 
         $attrs = [];
         $attrs['queryId'] = 0;
@@ -228,10 +236,15 @@ class M042MigrateArticlesBlockToPostsListBlock extends MigrationScript
                                             ['term' => 'post_tag', 'separator' => ' ']
                                         ),
                                     ],
-                                    []
+                                    [
+                                        'layout' => [
+                                            'type' => 'flex',
+                                        ]
+                                    ]
                                 ),
                                 Utils\Functions::create_new_block(
-                                    Utils\Constants::BLOCK_TITLE
+                                    Utils\Constants::BLOCK_TITLE,
+                                    ['isLink' => true]
                                 ),
                                 Utils\Functions::create_new_block(
                                     Utils\Constants::BLOCK_EXCERPT

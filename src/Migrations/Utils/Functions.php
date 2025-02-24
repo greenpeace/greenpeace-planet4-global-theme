@@ -61,7 +61,8 @@ class Functions
                 $blocks = self::process_blocks_recursive(
                     $blocks,
                     $block_check_callback,
-                    $block_transformation_callback
+                    $block_transformation_callback,
+                    $current_post_id
                 );
 
                 // Serialize the blocks content.
@@ -103,10 +104,16 @@ class Functions
     private static function process_blocks_recursive(
         array $blocks,
         callable $block_check_callback,
-        callable $block_transformation_callback
+        callable $block_transformation_callback,
+        $current_post_id = ''
     ): array {
         foreach ($blocks as &$block) {
             if ($block_check_callback($block)) {
+                // The current post ID is needed to exclude it in Post list block.
+                if ($block['blockName'] === Constants::BLOCK_ARTICLES) {
+                    $block['attrs']['current_post_id'] = $current_post_id;
+                }
+
                 $block = $block_transformation_callback($block);
             }
 
@@ -118,7 +125,8 @@ class Functions
             $block['innerBlocks'] = self::process_blocks_recursive(
                 $block['innerBlocks'],
                 $block_check_callback,
-                $block_transformation_callback
+                $block_transformation_callback,
+                $current_post_id
             );
         }
 
