@@ -100,12 +100,13 @@ class Functions
      * @param string $block_name - The name of the block to be migrated.
      * @param callable $block_check_callback - Callback function to check if block is valid for migration.
      * @param callable $record block_transformation_callback - Callback function to transform a block.
+     * @param int $current_post_id - The current post ID.
      */
     private static function process_blocks_recursive(
         array $blocks,
         callable $block_check_callback,
         callable $block_transformation_callback,
-        $current_post_id = ''
+        int $current_post_id = 0
     ): array {
         foreach ($blocks as &$block) {
             if ($block_check_callback($block)) {

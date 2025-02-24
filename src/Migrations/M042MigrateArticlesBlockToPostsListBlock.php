@@ -236,11 +236,7 @@ class M042MigrateArticlesBlockToPostsListBlock extends MigrationScript
                                             ['term' => 'post_tag', 'separator' => ' ']
                                         ),
                                     ],
-                                    [
-                                        'layout' => [
-                                            'type' => 'flex',
-                                        ]
-                                    ]
+                                    ['layout' => ['type' => 'flex']]
                                 ),
                                 Utils\Functions::create_new_block(
                                     Utils\Constants::BLOCK_TITLE,
