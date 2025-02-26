@@ -142,7 +142,7 @@ class M042MigrateArticlesBlockToPostsListBlock extends MigrationScript
         $query['orderBy'] = 'date';
         $query['author'] = '';
         $query['search'] = '';
-        $query['exclude'] = [];
+        $query['exclude'] = [$current_post_id];
         $query['sticky'] = '';
         $query['inherit'] = false;
         $query['hasPassword'] = false;
@@ -156,10 +156,6 @@ class M042MigrateArticlesBlockToPostsListBlock extends MigrationScript
         }
         if (!empty($post_types)) {
             $query['taxQuery']['p4-page-type'] = $post_types;
-        }
-
-        if ($current_post_id) {
-            $query['exclude'] = [$current_post_id];
         }
 
         $layout = [];

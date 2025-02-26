@@ -112,9 +112,7 @@ class Functions
         foreach ($blocks as &$block) {
             if ($block_check_callback($block)) {
                 // The current post ID is needed to exclude it in Post list block.
-                if ($block['blockName'] === Constants::BLOCK_ARTICLES) {
-                    $block['attrs']['current_post_id'] = $current_post_id;
-                }
+                $block['attrs']['current_post_id'] = $current_post_id;
 
                 $block = $block_transformation_callback($block);
             }
