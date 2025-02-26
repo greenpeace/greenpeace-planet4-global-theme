@@ -535,16 +535,14 @@ class MediaReplacer
      */
     private function success_handler(string $message, string $stateless_url): void
     {
-        $this->cf->purge([$stateless_url]);
+        $result = $this->cf->purge([$stateless_url]);
 
-        // foreach ($aa as [$response, $purgedUrls]) {
-        //     error_log ("Purged URLs:");
-        //     error_log(print_r($purgedUrls, true));
-        //     // print_r($purgedUrls);
-        //     // echo "Response:\n";
-        //     error_log('aaaa $response');
-        //     error_log(print_r($response, true));
-        // }
+        foreach ($result as [$response, $purgedUrls]) {
+            if (function_exists('\Sentry\captureException')) {
+                \Sentry\captureException(print_r($response, true));
+                \Sentry\captureException(print_r($purgedUrls, true));
+            }
+        }
 
         array_push($this->replacement_status['success'], $message);
         $this->transient_handler(self::TRANSIENT['file'], $this->replacement_status);
