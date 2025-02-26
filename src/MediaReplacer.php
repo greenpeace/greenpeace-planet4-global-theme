@@ -538,9 +538,9 @@ class MediaReplacer
         $result = $this->cf->purge([$stateless_url]);
 
         foreach ($result as [$response, $purgedUrls]) {
-            if (function_exists('\Sentry\captureException')) {
-                \Sentry\captureException(print_r($response, true));
-                \Sentry\captureException(print_r($purgedUrls, true));
+            if (function_exists('\Sentry\captureMessage')) {
+                \Sentry\captureMessage(print_r($response, true));
+                \Sentry\captureMessage(print_r($purgedUrls, true));
             }
         }
 
