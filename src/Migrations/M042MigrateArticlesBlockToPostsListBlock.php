@@ -37,7 +37,7 @@ class M042MigrateArticlesBlockToPostsListBlock extends MigrationScript
     // phpcs:enable SlevomatCodingStandard.Functions.UnusedParameter
 
     /**
-     * Check whether a block is a Articles block.
+     * Check whether a block is an Articles block.
      *
      * @param array $block - A block data array.
      */
@@ -53,12 +53,12 @@ class M042MigrateArticlesBlockToPostsListBlock extends MigrationScript
             return false;
         }
 
-        // Check if the block is a Articles block.
+        // Check if the block is an Articles block.
         return $block['blockName'] === Utils\Constants::BLOCK_ARTICLES;
     }
 
     /**
-     * Create a new Query block based on attributes of a Articles block.
+     * Create a new Query block based on attributes of an Articles block.
      *
      * @param array $block - The current articles block.
      * @return array - The new block.

@@ -65,8 +65,9 @@ class Functions
                     $current_post_id
                 );
 
-                // Serialize the blocks content.
-                $new_content = serialize_blocks($blocks);
+
+                // Serialize the blocks content & suppress warnings for this specific line
+                $new_content = @serialize_blocks($blocks);
 
                 if ($post->post_content === $new_content) {
                     continue;
@@ -274,14 +275,16 @@ class Functions
      */
     public static function create_block_paragraph(array $attrs, string $content): array
     {
-        $margin = $attrs['style']['spacing']['margin'];
+        if (isset($attrs['style'])) {
+            $margin = $attrs['style']['spacing']['margin'];
+        }
 
         $styles =
             isset($margin) ?
-            'margin-top: ' . $margin['top'] . '; margin-bottom: ' . $margin['bottom'] . ';' :
+            'style="margin-top: ' . $margin['top'] . '; margin-bottom: ' . $margin['bottom'] . ';"' :
             '';
 
-        $html = '<p style="' . $styles . '">' . $content . '</p>';
+        $html = '<p ' . $styles . '>' . $content . '</p>';
 
         return self::create_new_block(
             Constants::BLOCK_PARAGRAPH,
