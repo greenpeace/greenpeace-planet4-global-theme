@@ -18,6 +18,7 @@ import {addButtonLinkPasteWarning} from './block-editor/addButtonLinkPasteWarnin
 import {addBlockFilters} from './block-editor/BlockFilters';
 import {replaceTaxonomyTermSelectors} from './block-editor/replaceTaxonomyTermSelectors';
 import {setupImageBlockExtension} from './block-editor/setupImageBlockExtension';
+import {registerSecondaryNavigationBlock} from './blocks/SecondaryNavigation/SecondaryNavigationBlock';
 
 wp.domReady(() => {
   // Blocks
@@ -37,6 +38,7 @@ wp.domReady(() => {
   if (window.p4_vars.features.beta_blocks === 'on') {
     registerActionButtonTextBlock();
     registerActionsListBlock();
+    registerSecondaryNavigationBlock();
   }
 
   // Custom block styles

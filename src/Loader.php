@@ -219,6 +219,7 @@ final class Loader
         new Blocks\TakeActionBoxout();//NOSONAR
         new Blocks\Timeline();//NOSONAR
         new Blocks\TopicLink();//NOSONAR
+        new Blocks\SecondaryNavigation();//NOSONAR
 
         register_block_pattern_category(
             'page-headers',
