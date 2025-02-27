@@ -14,6 +14,24 @@ export const registerActionsListBlock = () => {
 
   const queryPostType = IS_NEW_IA ? 'p4_action' : 'page';
 
+  const query = {
+    pages: 0,
+    perPage: 3,
+    offset: 0,
+    order: 'desc',
+    orderBy: 'date',
+    postStatus: 'publish',
+    author: '',
+    search: '',
+    exclude: [],
+    sticky: '',
+    inherit: false,
+    postType: queryPostType,
+    postIn: [],
+    hasPassword: false,
+    ...!IS_NEW_IA && {parent: ACT_PAGE},
+  };
+
   registerBlockVariation('core/query', {
     name: ACTIONS_LIST_BLOCK_NAME,
     title: 'Actions List',
@@ -26,22 +44,7 @@ export const registerActionsListBlock = () => {
     attributes: {
       namespace: ACTIONS_LIST_BLOCK_NAME,
       className: 'actions-list p4-query-loop is-custom-layout-grid',
-      query: {
-        pages: 0,
-        perPage: 3,
-        offset: 0,
-        order: 'desc',
-        orderBy: 'date',
-        author: '',
-        search: '',
-        exclude: [],
-        sticky: '',
-        inherit: false,
-        postType: queryPostType,
-        postIn: [],
-        hasPassword: false,
-        ...!IS_NEW_IA && {postParent: ACT_PAGE},
-      },
+      query,
       layout: {
         type: 'grid',
         columnCount: 3,

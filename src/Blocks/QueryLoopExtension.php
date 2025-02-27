@@ -43,13 +43,27 @@ class QueryLoopExtension
             'query_loop_block_query_vars',
             function ($query, $block) {
                 $blockQuery = $block->context['query'] ?? [];
+
+                $is_new_ia = !empty(planet4_get_option('new_ia'));
+
+                $query['post_type'] = ['page'];
+
+                if (!$is_new_ia) {
+                    $query['post_parent'] = $blockQuery['parent'];
+                } else {
+                    array_push($query['post_type'], 'p4_action');
+                    $query['post_parent__in'] = [$blockQuery['parent'], planet4_get_option('take_action_page')];
+                }
+
                 if (!empty($blockQuery['postIn'])) {
                     $query['post__in'] = array_map('intval', (array) $blockQuery['postIn']);
                     $query['orderby'] = 'post__in';
                 }
+
                 if (isset($blockQuery['hasPassword'])) {
                     $query['has_password'] = (bool) $blockQuery['hasPassword'];
                 }
+
                 return $query;
             },
             10,
