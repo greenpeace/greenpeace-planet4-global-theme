@@ -61,11 +61,13 @@ class Functions
                 $blocks = self::process_blocks_recursive(
                     $blocks,
                     $block_check_callback,
-                    $block_transformation_callback
+                    $block_transformation_callback,
+                    $current_post_id
                 );
 
-                // Serialize the blocks content.
-                $new_content = serialize_blocks($blocks);
+
+                // Serialize the blocks content & suppress warnings for this specific line
+                $new_content = @serialize_blocks($blocks);
 
                 if ($post->post_content === $new_content) {
                     continue;
@@ -99,14 +101,19 @@ class Functions
      * @param string $block_name - The name of the block to be migrated.
      * @param callable $block_check_callback - Callback function to check if block is valid for migration.
      * @param callable $record block_transformation_callback - Callback function to transform a block.
+     * @param int $current_post_id - The current post ID.
      */
     private static function process_blocks_recursive(
         array $blocks,
         callable $block_check_callback,
-        callable $block_transformation_callback
+        callable $block_transformation_callback,
+        int $current_post_id = 0
     ): array {
         foreach ($blocks as &$block) {
             if ($block_check_callback($block)) {
+                // The current post ID is needed to exclude it in Post list block.
+                $block['attrs']['current_post_id'] = $current_post_id;
+
                 $block = $block_transformation_callback($block);
             }
 
@@ -118,7 +125,8 @@ class Functions
             $block['innerBlocks'] = self::process_blocks_recursive(
                 $block['innerBlocks'],
                 $block_check_callback,
-                $block_transformation_callback
+                $block_transformation_callback,
+                $current_post_id
             );
         }
 
@@ -265,14 +273,16 @@ class Functions
      */
     public static function create_block_paragraph(array $attrs, string $content): array
     {
-        $margin = $attrs['style']['spacing']['margin'];
+        if (isset($attrs['style'])) {
+            $margin = $attrs['style']['spacing']['margin'];
+        }
 
         $styles =
             isset($margin) ?
-            'margin-top: ' . $margin['top'] . '; margin-bottom: ' . $margin['bottom'] . ';' :
+            'style="margin-top: ' . $margin['top'] . '; margin-bottom: ' . $margin['bottom'] . ';"' :
             '';
 
-        $html = '<p style="' . $styles . '">' . $content . '</p>';
+        $html = '<p ' . $styles . '>' . $content . '</p>';
 
         return self::create_new_block(
             Constants::BLOCK_PARAGRAPH,

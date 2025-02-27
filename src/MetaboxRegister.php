@@ -63,7 +63,7 @@ class MetaboxRegister
 
         $p4_post->add_field(
             [
-                'name' => __('Include Articles In Post', 'planet4-master-theme-backend'),
+                'name' => __('Include Related Posts', 'planet4-master-theme-backend'),
                 'id' => 'include_articles',
                 'type' => 'select',
                 'options' => [
