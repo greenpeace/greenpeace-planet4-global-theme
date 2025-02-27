@@ -530,8 +530,18 @@ add_filter(
 
 if (class_exists('\\Sentry\\Options')) {
     add_filter('wp_sentry_options', function (\Sentry\Options $options) {
-        // Only sample 25% of the events
-        $options->setSampleRate(0.25);
+        // Only sample 50% of the events
+        $options->setSampleRate(0.50);
+
+        // Set server_name tag
+        $podname = gethostname();
+        $parts = explode('-', $podname);
+        $server_name = $parts[1];
+        if (count($parts) > 6) {
+            $server_name = $parts[1] . '-' . $parts[2];
+        }
+        $options->setServerName($server_name);
+
         return $options;
     });
 }
