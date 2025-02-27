@@ -159,10 +159,8 @@
   background-size: 12px;
   border-radius: 100%;
 
-  &:focus,
-  &:focus-visible {
-    outline: 2px solid #99c3ff;
-    outline-offset: 2px;
+  &:focus {
+    @include focus-styles;
   }
 
   html[dir="rtl"] & {
@@ -207,6 +205,10 @@
   border-radius: 4px;
   height: 44px;
   width: 44px;
+
+  &:focus {
+    @include focus-styles;
+  }
 
   &.open --top-navigation--search-toggle-- {
     background: var(--grey-200);

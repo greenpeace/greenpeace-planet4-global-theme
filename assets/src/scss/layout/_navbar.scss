@@ -339,9 +339,7 @@ a.nav-link:hover:before,
   width: 10px;
   height: 10px;
   pointer-events: auto;
-  outline: 2px solid #99c3ff;
-  outline-offset: 2px;
-  border-radius: 2px;
+  @include focus-styles;
 }
 
 .nav-donate .nav-submenu {

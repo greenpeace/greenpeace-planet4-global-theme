@@ -318,6 +318,13 @@ $nested-comment-left-margin: 50px;
   overflow: hidden;
 }
 
+// Focus styles for buttons, links, etc
+@mixin focus-styles {
+  outline: 2px solid #99c3ff;
+  outline-offset: 1px;
+  border-radius: 4px;
+}
+
 // Apply custom layout to checkboxes
 @mixin custom-checkbox {
   position: relative;
@@ -394,8 +401,7 @@ $nested-comment-left-margin: 50px;
 
   &:has(> input[type="checkbox"]:focus) {
     &::before {
-      outline: 2px solid #99c3ff;
-      outline-offset: 1px;
+      @include focus-styles;
     }
   }
 }

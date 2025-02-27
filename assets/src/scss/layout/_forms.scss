@@ -10,8 +10,7 @@
 
     &:focus:focus-visible ~ label:before,
     &:focus:focus-visible ~ .custom-control-description:before {
-      outline: 2px solid #99c3ff;
-      outline-offset: 1px;
+      @include focus-styles;
     }
 
     &:not(:disabled) ~ .custom-control-description:hover:before,
