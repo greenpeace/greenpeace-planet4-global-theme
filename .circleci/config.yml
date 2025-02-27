@@ -188,6 +188,7 @@ jobs:
 
   e2e-tests:
     working_directory: /usr/app/
+    parallelism: 4
     docker:
       - image: mcr.microsoft.com/playwright:v1.49.1
         auth:
@@ -210,7 +211,11 @@ jobs:
             export WP_BASE_URL="https://www-dev.greenpeace.org/test-$(cat /tmp/workspace/test-instance)/"
             export WP_TEST_USERNAME="p4_test_user"
             export WP_TEST_PASSWORD="${WP_TEST_USER}"
-            npx playwright test
+            SHARD="$((${CIRCLE_NODE_INDEX}+1))"
+            npx playwright test --shard=1/${CIRCLE_NODE_TOTAL}
+            npx playwright test --shard=2/${CIRCLE_NODE_TOTAL}
+            npx playwright test --shard=3/${CIRCLE_NODE_TOTAL}
+            npx playwright test --shard=4/${CIRCLE_NODE_TOTAL}
       - run:
           name: Delete test user
           when: always
