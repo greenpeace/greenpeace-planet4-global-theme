@@ -127,9 +127,7 @@ h6 {
 
 a --link-- {
   &:focus {
-    outline: 2px solid #99c3ff;
-    outline-offset: 2px;
-    border-radius: 4px;
+    @include focus-styles;
   }
 }
 
