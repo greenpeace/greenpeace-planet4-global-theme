@@ -56,7 +56,6 @@ export const setupQueryLoopCarousel = () => {
       const carousel = document.createElement('div');
       carousel.setAttribute('id', uniqueId);
       carousel.classList.add(LAYOUTS.carousel, 'slide');
-      carousel.dataset.bsRide = LAYOUTS.carousel;
 
       list.classList.add(`${LAYOUTS.carousel}-inner`);
       list.after(carousel);
